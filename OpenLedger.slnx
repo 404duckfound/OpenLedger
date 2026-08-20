@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="OpenLedger.Application/OpenLedger.Application.csproj" Id="3d450392-2664-43ae-ace1-ee3eb53aa2c3" />
+  <Project Path="OpenLedger.Domain/OpenLedger.Domain.csproj" />
+  <Project Path="OpenLedger.Infrastructure/OpenLedger.Infrastructure.csproj" />
+</Solution>
