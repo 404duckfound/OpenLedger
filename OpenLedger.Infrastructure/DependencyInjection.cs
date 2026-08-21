@@ -5,7 +5,7 @@ using OpenLedger.Application.Interfaces.Repository.Customs;
 using OpenLedger.Infrastructure.Contexts;
 using OpenLedger.Infrastructure.Options;
 using OpenLedger.Infrastructure.Repositories;
-using OpenLedger.Infrastructure.Services;
+using OpenLedger.Infrastructure.Singletons;
 
 namespace OpenLedger.Infrastructure
 {

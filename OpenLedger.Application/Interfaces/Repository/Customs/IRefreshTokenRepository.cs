@@ -4,9 +4,9 @@ namespace OpenLedger.Application.Interfaces.Repository.Customs
 {
     public interface IRefreshTokenRepository
     {
-        public Task<RefreshToken> CreateRefreshTokenAsync(RefreshToken refreshToken);
-        public Task<RefreshToken> RevokeRefreshTokenAsync(RefreshToken refreshToken);
-        public Task<List<RefreshToken>> GetByUserIdAsync(Guid userId);
-        public Task<RefreshToken?> GetRefreshTokenByTokenAsync(string token);
+        Task<RefreshToken?> GetByTokenAsync(string token, CancellationToken cancellationToken = default);
+        Task<List<RefreshToken>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default);
+        Task AddAsync(RefreshToken refreshToken, CancellationToken cancellationToken = default);
+        Task UpdateAsync(RefreshToken refreshToken, CancellationToken cancellationToken = default);
     }
 }

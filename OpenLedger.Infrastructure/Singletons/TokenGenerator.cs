@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace OpenLedger.Infrastructure.Services
+namespace OpenLedger.Infrastructure.Singletons
 {
     public class TokenGenerator(IOptions<JwtOptions> jwtOptions) : ITokenGenerator
     {

@@ -1,28 +1,32 @@
-﻿using OpenLedger.Application.Interfaces.Repository.Customs;
+﻿using Microsoft.EntityFrameworkCore;
+using OpenLedger.Application.Interfaces.Repository.Customs;
 using OpenLedger.Domain.Entities.Auth;
+using OpenLedger.Infrastructure.Contexts;
 
 namespace OpenLedger.Infrastructure.Repositories
 {
-    public class RefreshTokenRepository() : IRefreshTokenRepository
+    public class RefreshTokenRepository(AppDbContext context) : IRefreshTokenRepository
     {
-        public Task<RefreshToken> CreateRefreshTokenAsync(RefreshToken refreshToken)
+        public async Task AddAsync(RefreshToken refreshToken, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            await context.RefreshTokens.AddAsync(refreshToken, cancellationToken);
+            return;
         }
 
-        public Task<List<RefreshToken>> GetByUserIdAsync(Guid userId)
+        public async Task<RefreshToken?> GetByTokenAsync(string token, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            return await context.RefreshTokens.FirstOrDefaultAsync(r => r.Token == token, cancellationToken);
         }
 
-        public Task<RefreshToken?> GetRefreshTokenByTokenAsync(string token)
+        public async Task<List<RefreshToken>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            return await context.RefreshTokens.Where(r=>r.UserId == userId).ToListAsync(cancellationToken);
         }
 
-        public Task<RefreshToken> RevokeRefreshTokenAsync(RefreshToken refreshToken)
+        public Task UpdateAsync(RefreshToken refreshToken, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            context.RefreshTokens.Update(refreshToken);
+            return Task.CompletedTask;
         }
     }
 }
