@@ -2,7 +2,7 @@
 
 namespace OpenLedger.Application.Dtos.Auth
 {
-    public class LoginRequestDto
+    public record LoginRequestDto
     {
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Email is not valid.")]

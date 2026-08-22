@@ -10,7 +10,7 @@ using System.Text;
 
 namespace OpenLedger.Infrastructure.Singletons
 {
-    public class TokenGenerator(IOptions<JwtOptions> jwtOptions) : ITokenGenerator
+    public class TokenGenerator(IOptions<TokenOptions> tokenOptions) : ITokenGenerator
     {
         public string GenerateJwtToken(User user)
         {
@@ -25,13 +25,13 @@ namespace OpenLedger.Infrastructure.Singletons
 
             if (user.TenantId != Guid.Empty) claims.Add(new("TenantId",user.TenantId.ToString()));
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Value.Secret));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions.Value.JwtSecret));
 
             var tokenDescriptor = new JwtSecurityToken(
-                issuer: jwtOptions.Value.Issuer,
-                audience: jwtOptions.Value.Audience,
+                issuer: tokenOptions.Value.JwtIssuer,
+                audience: tokenOptions.Value.JwtAudience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(jwtOptions.Value.Expires),
+                expires: DateTime.UtcNow.AddMinutes(tokenOptions.Value.JwtExpires),
                 signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
             );
 
