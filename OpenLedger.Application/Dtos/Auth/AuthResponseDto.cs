@@ -1,9 +1,4 @@
 ﻿namespace OpenLedger.Application.Dtos.Auth
 {
-    public record AuthResponseDto
-    {
-        public required string AccessToken { get; set; }
-        public required string RefreshToken { get; set; }
-        public required DateTime RefreshTokenExpires { get; set; }
-    }
+    public record AuthResponseDto(string AccessToken, string RefreshToken, DateTime RefreshTokenExpires) {}
 }

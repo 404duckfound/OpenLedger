@@ -1,4 +1,5 @@
-﻿using OpenLedger.Domain.Entities.Auth;
+﻿using System.Security.Claims;
+using OpenLedger.Domain.Entities.Auth;
 
 namespace OpenLedger.Application.Interfaces.Singletons
 {
@@ -6,5 +7,6 @@ namespace OpenLedger.Application.Interfaces.Singletons
     {
         string GenerateJwtToken(User user);
         string GenerateRefreshToken();
+        ClaimsPrincipal GetClaimsFromJwt(string token);
     }
 }

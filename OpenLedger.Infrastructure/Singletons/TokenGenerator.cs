@@ -44,5 +44,26 @@ namespace OpenLedger.Infrastructure.Singletons
             rng.GetBytes(bytes);
             return Convert.ToBase64String(bytes);
         }
+        public ClaimsPrincipal GetClaimsFromJwt(string token)
+        {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false,
+                ValidateIssuer = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions.Value.JwtSecret)),
+                ValidateLifetime = false
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var validation = tokenHandler.ValidateToken(token,tokenValidationParameters,out var securityToken);
+
+            if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new SecurityTokenException("Invalid token algorithm.");
+            }           
+
+            return validation;
+        }
     }
 }

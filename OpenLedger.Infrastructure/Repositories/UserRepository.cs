@@ -22,5 +22,10 @@ namespace OpenLedger.Infrastructure.Repositories
         {
             return await context.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
         }
+
+        public async Task<User?> GetByIdAsync(Guid userId, CancellationToken cancellationToken = default)
+        {
+            return await context.Users.FindAsync(userId, cancellationToken);
+        }
     }
 }
