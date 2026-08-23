@@ -1,6 +1,6 @@
 ﻿using OpenLedger.Domain.Entities.Auth;
 
-namespace OpenLedger.Application.Interfaces.Repository.Customs
+namespace OpenLedger.Application.Interfaces.Repositories.Customs
 {
     public interface IRefreshTokenRepository
     {

@@ -16,7 +16,6 @@ namespace OpenLedger.Infrastructure.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
         }
 
         public DbSet<Tenant> Tenants { get; set; }

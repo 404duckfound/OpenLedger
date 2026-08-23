@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using OpenLedger.Application.Interfaces.Auth;
+using OpenLedger.Application.Interfaces.Singletons;
 using OpenLedger.Domain.Entities.Auth;
 using OpenLedger.Infrastructure.Options;
 using System.IdentityModel.Tokens.Jwt;
@@ -23,7 +23,7 @@ namespace OpenLedger.Infrastructure.Singletons
                 new(ClaimTypes.Role, user.Role.ToString()),
             };
 
-            if (user.TenantId != Guid.Empty) claims.Add(new("TenantId",user.TenantId.ToString()));
+            if (user.TenantId != Guid.Empty) claims.Add(new("TenantId", user.TenantId.ToString()));
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions.Value.JwtSecret));
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using OpenLedger.Application.Interfaces.Auth;
-using OpenLedger.Application.Interfaces.Repository.Customs;
+using OpenLedger.Application.Interfaces.Singletons;
+using OpenLedger.Application.Interfaces.Repositories.Customs;
 using OpenLedger.Application.Interfaces.Services;
 using OpenLedger.Infrastructure.Contexts;
 using OpenLedger.Infrastructure.Options;
@@ -25,6 +25,7 @@ namespace OpenLedger.Infrastructure
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
             services.AddSingleton<ITokenGenerator, TokenGenerator>();
+            services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
             return services;
         }

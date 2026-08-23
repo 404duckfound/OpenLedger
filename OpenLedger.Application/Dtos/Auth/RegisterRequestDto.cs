@@ -2,7 +2,7 @@
 
 namespace OpenLedger.Application.Dtos.Auth
 {
-    public struct RegisterRequestDto
+    public record RegisterRequestDto
     {
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Email is not valid.")]
@@ -10,7 +10,7 @@ namespace OpenLedger.Application.Dtos.Auth
 
         [Required(ErrorMessage = "Name is required.")]
         [StringLength(50, MinimumLength = 2, ErrorMessage = "Password must be between 2 and 50 characters.")]
-        [RegularExpression(@"^[a-zA-ZğüşıöçĞÜŞİÖÇ\s]+$", ErrorMessage ="Name is not valid.")]
+        [RegularExpression(@"^[a-zA-ZğüşıöçĞÜŞİÖÇ\s]+$", ErrorMessage = "Name is not valid.")]
         public required string Name { get; set; }
 
         [Required(ErrorMessage = "Password is required.")]

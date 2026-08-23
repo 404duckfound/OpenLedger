@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OpenLedger.Application.Interfaces.Repository.Customs;
+using OpenLedger.Application.Interfaces.Repositories.Customs;
 using OpenLedger.Domain.Entities.Auth;
 using OpenLedger.Infrastructure.Contexts;
 
@@ -20,7 +20,7 @@ namespace OpenLedger.Infrastructure.Repositories
 
         public async Task<List<RefreshToken>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
         {
-            return await context.RefreshTokens.Where(r=>r.UserId == userId).ToListAsync(cancellationToken);
+            return await context.RefreshTokens.Where(r => r.UserId == userId).ToListAsync(cancellationToken);
         }
 
         public Task UpdateAsync(RefreshToken refreshToken, CancellationToken cancellationToken = default)

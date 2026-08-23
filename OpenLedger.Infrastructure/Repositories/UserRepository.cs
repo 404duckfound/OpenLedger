@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OpenLedger.Application.Interfaces.Repository.Customs;
+using OpenLedger.Application.Interfaces.Repositories.Customs;
 using OpenLedger.Domain.Entities.Auth;
 using OpenLedger.Infrastructure.Contexts;
 
@@ -8,7 +8,7 @@ namespace OpenLedger.Infrastructure.Repositories
     public class UserRepository(AppDbContext context) : IUserRepository
     {
         public async Task AddAsync(User user, CancellationToken cancellationToken = default)
-        { 
+        {
             await context.Users.AddAsync(user, cancellationToken);
             return;
         }

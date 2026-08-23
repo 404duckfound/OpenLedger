@@ -1,10 +1,10 @@
 ﻿using OpenLedger.Domain.Entities.Auth;
 
-namespace OpenLedger.Application.Interfaces.Auth
+namespace OpenLedger.Application.Interfaces.Singletons
 {
     public interface ITokenGenerator
     {
-       public string GenerateJwtToken(User user);
-       public string GenerateRefreshToken();
+        string GenerateJwtToken(User user);
+        string GenerateRefreshToken();
     }
 }
