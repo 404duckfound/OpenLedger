@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace OpenLedger.Infrastructure.Options
+namespace OpenLedger.Application.Options
 {
     public class TokenOptions
     {

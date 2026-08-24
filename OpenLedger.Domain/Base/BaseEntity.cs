@@ -2,7 +2,7 @@
 {
     public class BaseEntity
     {
-        public Guid Id { get; protected set; } = Guid.CreateVersion7();
-        public DateTime CreatedAt { get; protected set; } = DateTime.UtcNow;
+        public Guid Id { get; private set; } = Guid.CreateVersion7();
+        public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     }
 }

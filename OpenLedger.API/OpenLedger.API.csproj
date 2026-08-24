@@ -9,16 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.11" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.24.1-preview.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.17.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\OpenLedger.Application\OpenLedger.Application.csproj" />
-    <ProjectReference Include="..\OpenLedger.Domain\OpenLedger.Domain.csproj" />
     <ProjectReference Include="..\OpenLedger.Infrastructure\OpenLedger.Infrastructure.csproj" />
   </ItemGroup>
 

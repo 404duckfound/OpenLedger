@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using OpenLedger.Application.Interfaces.Singletons;
+using OpenLedger.Application.Options;
 using OpenLedger.Domain.Entities.Auth;
-using OpenLedger.Infrastructure.Options;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -46,7 +46,7 @@ namespace OpenLedger.Infrastructure.Singletons
         }
         public ClaimsPrincipal GetClaimsFromJwt(string token)
         {
-            var tokenValidationParameters = new TokenValidationParameters
+            TokenValidationParameters tokenValidationParameters = new()
             {
                 ValidateAudience = false,
                 ValidateIssuer = false,
@@ -55,15 +55,14 @@ namespace OpenLedger.Infrastructure.Singletons
                 ValidateLifetime = false
             };
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var validation = tokenHandler.ValidateToken(token,tokenValidationParameters,out var securityToken);
+            var principal = new JwtSecurityTokenHandler().ValidateToken(token, tokenValidationParameters, out var securityToken);
 
             if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
             {
                 throw new SecurityTokenException("Invalid token algorithm.");
-            }           
+            }
 
-            return validation;
+            return principal;
         }
     }
 }

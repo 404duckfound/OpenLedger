@@ -5,9 +5,10 @@ namespace OpenLedger.Infrastructure.Repositories.Base
 {
     public class UnitOfWork(AppDbContext context) : IUnitOfWork
     {
-        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            return await context.SaveChangesAsync(cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
+            return; 
         }
     }
 }
