@@ -1,5 +1,6 @@
-﻿using OpenLedger.Application.Dtos.Auth;
-using OpenLedger.Domain.Entities.Auth;
+﻿using OpenLedger.Application.Dtos.Auth.Response;
+using OpenLedger.Application.Dtos.Auth.Request;
+
 
 namespace OpenLedger.Application.Interfaces.Services
 {

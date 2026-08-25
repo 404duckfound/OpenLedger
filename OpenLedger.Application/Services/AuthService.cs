@@ -51,7 +51,7 @@ namespace OpenLedger.Application.Services
             var refreshToken = await refreshTokenRepository.GetByTokenAsync(request.RefreshToken, cancellationToken) ?? throw new UnauthorizedAccessException("Invalid refresh token.");
             var user = await userRepository.GetByIdAsync(userId, cancellationToken) ?? throw new UnauthorizedAccessException("User not found.");
 
-            if (userId != user.Id) throw new UnauthorizedAccessException("User id doesnt match.");
+            if (userId != user.Id) throw new UnauthorizedAccessException("User id don't match.");
 
             var res = await CreateResponseAsync(user, cancellationToken);
 
@@ -82,7 +82,7 @@ namespace OpenLedger.Application.Services
 
             await refreshTokenRepository.AddAsync(refreshToken, cancellationToken);
 
-            return new AuthResponseDto(jwt, refreshToken.Token!, refreshToken.ExpiresAt.GetValueOrDefault());
+            return new AuthResponseDto(jwt, refreshToken.Token!, refreshToken.ExpiresAt);
         }
     }
 }

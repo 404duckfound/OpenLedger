@@ -1,8 +1,9 @@
 ﻿using OpenLedger.Domain.Base;
+using OpenLedger.Domain.Interfaces;
 
 namespace OpenLedger.Domain.Entities.Auth
 {
-    public class RefreshToken(Guid userId, string token, DateTime expiresAt, string createdByIp, string userAgent) : BaseEntity
+    public class RefreshToken(Guid userId, string token, DateTime expiresAt, string createdByIp, string userAgent) : BaseEntity, IUserOwnedEntity
     {
         public Guid UserId { get; private set; } = userId;
         public string Token { get; private set; } = token;
@@ -19,6 +20,7 @@ namespace OpenLedger.Domain.Entities.Auth
         public bool IsRevoked { get => RevokedAt <= DateTime.MinValue; }
         public bool IsExpired { get => ExpiresAt < DateTime.UtcNow; }
         public bool IsActive { get => !IsRevoked && !IsExpired; }
+
 
         public void Revoke(string revokedByIp, string reason, string? replacedByToken = null)
         {

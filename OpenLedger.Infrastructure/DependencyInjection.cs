@@ -23,10 +23,10 @@ namespace OpenLedger.Infrastructure
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddSingleton<ITokenGenerator, TokenGenerator>();
-            services.AddSingleton<IPasswordHasher, PasswordHasher>();            
-            
             services.AddScoped<IAuthService, AuthService>();
+
+            services.AddSingleton<ITokenGenerator, TokenGenerator>();
+            services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
             return services;
         }

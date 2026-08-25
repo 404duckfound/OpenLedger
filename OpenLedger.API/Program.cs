@@ -1,6 +1,8 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using OpenLedger.API.Services;
+using OpenLedger.Application.Interfaces;
 using OpenLedger.Application.Interfaces.Services;
 using OpenLedger.Application.Options;
 using OpenLedger.Infrastructure;
@@ -13,6 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddInfrastructure();
+builder.Services.AddValidatorsFromAssemblyContaining<IApplicationAssemblyMarker>();
 
 builder.Services.AddDbContext<AppDbContext>((services, options) =>
 {
