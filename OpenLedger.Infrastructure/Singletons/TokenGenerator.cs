@@ -39,9 +39,7 @@ namespace OpenLedger.Infrastructure.Singletons
         }
         public string GenerateRefreshToken()
         {
-            var bytes = new byte[64];
-            using var rng = RandomNumberGenerator.Create();
-            rng.GetBytes(bytes);
+            var bytes = RandomNumberGenerator.GetBytes(64);
             return Convert.ToBase64String(bytes);
         }
         public ClaimsPrincipal GetClaimsFromJwt(string token)

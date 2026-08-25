@@ -1,5 +1,4 @@
 ﻿using OpenLedger.Domain.Base;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OpenLedger.Domain.Entities.Auth
 {
@@ -12,17 +11,19 @@ namespace OpenLedger.Domain.Entities.Auth
         public string CreatedByIp { get; private set; } = createdByIp;
 
         public string? RevokedByIp { get; private set; }
-        public DateTime? RevokedAt { get; private set; }
+        public DateTime RevokedAt { get; private set; }
         public string? ReplacedByToken { get; private set; }
         public string? RevokeReason { get; private set; }
 
         // Domain Functions
-        public bool IsRevoked { get => RevokedAt != null; }
+        public bool IsRevoked { get => RevokedAt <= DateTime.MinValue; }
         public bool IsExpired { get => ExpiresAt < DateTime.UtcNow; }
         public bool IsActive { get => !IsRevoked && !IsExpired; }
 
         public void Revoke(string revokedByIp, string reason, string? replacedByToken = null)
         {
+            if (IsRevoked) throw new Exception("Token is already revoked.");
+
             RevokedAt = DateTime.UtcNow;
             RevokedByIp = revokedByIp;
             ReplacedByToken = replacedByToken;
