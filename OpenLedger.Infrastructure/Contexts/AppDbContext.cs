@@ -11,7 +11,6 @@ namespace OpenLedger.Infrastructure.Contexts
         public DbSet<Tenant> Tenants { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -32,13 +31,13 @@ namespace OpenLedger.Infrastructure.Contexts
                 }
             }
         }
-        private void ConfigureTenantFilter<TEntity>(ModelBuilder modelBuilder) where TEntity : BaseTenantEntity
+        private void ConfigureTenantFilter<T>(ModelBuilder modelBuilder) where T : BaseTenantEntity
         {
-            modelBuilder.Entity<TEntity>().HasQueryFilter(q => q.TenantId == userService.TenantId);
+            modelBuilder.Entity<T>().HasQueryFilter(q => q.TenantId == userService.TenantId);
         }
-        private void ConfigureUserFilter<TEntity>(ModelBuilder modelBuilder) where TEntity : class, IUserOwnedEntity
+        private void ConfigureUserFilter<T>(ModelBuilder modelBuilder) where T : class, IUserOwnedEntity
         {
-            modelBuilder.Entity<TEntity>().HasQueryFilter(q => q.UserId == userService.UserId);
+            modelBuilder.Entity<T>().HasQueryFilter(q => q.UserId == userService.UserId);
         }
     }
 }

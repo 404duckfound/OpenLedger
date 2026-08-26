@@ -1,8 +1,7 @@
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using OpenLedger.API.Services;
-using OpenLedger.Application.Interfaces;
+using OpenLedger.Application;
 using OpenLedger.Application.Interfaces.Services;
 using OpenLedger.Application.Options;
 using OpenLedger.Infrastructure;
@@ -14,15 +13,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddInfrastructure();
-builder.Services.AddValidatorsFromAssemblyContaining<IApplicationAssemblyMarker>();
+builder.Services.AddApplication();
 
 builder.Services.AddDbContext<AppDbContext>((services, options) =>
 {
     var dbOptions = services.GetRequiredService<IOptions<DbOptions>>().Value;
     options.UseNpgsql(dbOptions.ConnectionString);
 });
-
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 var app = builder.Build();

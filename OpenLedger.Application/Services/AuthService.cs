@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
-using OpenLedger.Application.Dtos.Auth;
+using OpenLedger.Application.Dtos.Auth.Request;
+using OpenLedger.Application.Dtos.Auth.Response;
 using OpenLedger.Application.Interfaces.Repositories.Base;
 using OpenLedger.Application.Interfaces.Repositories.Customs;
 using OpenLedger.Application.Interfaces.Services;
