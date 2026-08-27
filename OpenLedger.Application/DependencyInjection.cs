@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using OpenLedger.Application.Interfaces.Services;
+using OpenLedger.Application.Behaviors;
 using OpenLedger.Application.Options;
-using OpenLedger.Application.Services;
 using System.Reflection;
 
 namespace OpenLedger.Application
@@ -15,10 +15,15 @@ namespace OpenLedger.Application
 
             services.AddValidatorsFromAssembly(assembly);
 
+            services.AddMediatR(cfg =>
+            {
+                cfg.RegisterServicesFromAssembly(assembly);
+
+                cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            });
+
             services.AddOptionsWithValidateOnStart<DbOptions>("Db");
             services.AddOptionsWithValidateOnStart<TokenOptions>("Token");
-
-            services.AddScoped<IAuthService, AuthService>();
 
             return services;
         }

@@ -1,15 +1,13 @@
 ﻿using FluentValidation;
 using System.Text.RegularExpressions;
 
-namespace OpenLedger.Application.Dtos.Auth.Request
+namespace OpenLedger.Application.Commands.Auth.Register
 {
-    public record RegisterRequestDto(string Email, string Name, string Password, string ConfirmPassword);
-
-    public class RegisterRequestDtoValidator : AbstractValidator<RegisterRequestDto>
+    public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
     {
         private static readonly Regex NameRegex = new(@"^[a-zA-ZğüşıöçĞÜŞİÖÇ\s]+$", RegexOptions.Compiled);
         private static readonly Regex PasswordRegex = new(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$", RegexOptions.Compiled);
-        public RegisterRequestDtoValidator()
+        public RegisterCommandValidator()
         {
             RuleFor(r => r.Email)
                 .NotEmpty().WithMessage("Email address is required.")

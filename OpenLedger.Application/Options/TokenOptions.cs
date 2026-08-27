@@ -10,10 +10,10 @@ namespace OpenLedger.Application.Options
         public required string JwtIssuer { get; set; }
         [Required(ErrorMessage = "Token:JwtAudience is required.")]
         public required string JwtAudience { get; set; }
-        [Required(ErrorMessage = "Token:JwtExpires is required."), Range(1, int.MaxValue, ErrorMessage = "Token:JwtExpires must be a positive integer.")]
+        [Required(ErrorMessage = "Token:JwtExpires is required.")]
         public required int JwtExpires { get; set; }
 
-        [Required(ErrorMessage = "Token:RefreshExpiresDays is required."), Range(1, int.MaxValue, ErrorMessage = "Token:RefreshExpiresDays must be a positive integer.")]
+        [Required(ErrorMessage = "Token:RefreshExpiresDays is required.")]
         public required int RefreshExpiresDays { get; set; }
     }
 }

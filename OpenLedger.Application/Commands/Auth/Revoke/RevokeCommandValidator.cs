@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
+using OpenLedger.Application.Commands.Auth.Refresh;
 
-namespace OpenLedger.Application.Dtos.Auth.Request
+namespace OpenLedger.Application.Commands.Auth.Revoke
 {
-    public record RefreshTokenRequestDto(string RefreshToken, string AccessToken);
-    public class RefreshTokenRequestDtoValidator : AbstractValidator<RefreshTokenRequestDto>
+    public class RefreshCommandValidator : AbstractValidator<RefreshCommand>
     {
-        public RefreshTokenRequestDtoValidator()
+        public RefreshCommandValidator()
         {
             RuleFor(r => r.RefreshToken)
                 .NotEmpty().WithMessage("Refresh token is required.")
