@@ -6,7 +6,7 @@ using OpenLedger.Domain.Interfaces;
 
 namespace OpenLedger.Infrastructure.Contexts
 {
-    public class AppDbContext(ICurrentUserService userService) : DbContext
+    public class AppDbContext(ICurrentUserService userService, DbContextOptions<AppDbContext> optionsBuilder) : DbContext(optionsBuilder)
     {
         public DbSet<Tenant> Tenants { get; set; }
         public DbSet<User> Users { get; set; }

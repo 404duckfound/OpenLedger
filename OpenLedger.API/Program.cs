@@ -13,16 +13,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddHttpContextAccessor();
-
 builder.Services.AddInfrastructure();
 builder.Services.AddApplication();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 builder.Services.AddDbContext<AppDbContext>((services, options) =>
 {
     var dbOptions = services.GetRequiredService<IOptions<DbOptions>>().Value;
     options.UseNpgsql(dbOptions.ConnectionString);
 });
-builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 var app = builder.Build();
 
