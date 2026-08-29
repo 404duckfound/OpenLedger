@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using OpenLedger.API.Services;
 using OpenLedger.Application;
 using OpenLedger.Application.Interfaces.Services;
@@ -16,11 +15,12 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddInfrastructure();
 builder.Services.AddApplication();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddOptionsWithValidateOnStart<TokenOptions>().BindConfiguration("Token");
 
-builder.Services.AddDbContext<AppDbContext>((services, options) =>
+builder.Services.AddDbContext<AppDbContext>((options) =>
 {
-    var dbOptions = services.GetRequiredService<IOptions<DbOptions>>().Value;
-    options.UseNpgsql(dbOptions.ConnectionString);
+    var connectionString = builder.Configuration.GetConnectionString("2026") ?? string.Empty;
+    options.UseNpgsql(connectionString, b => b.MigrationsAssembly("OpenLedger.Infrastructure"));
 });
 
 var app = builder.Build();

@@ -22,9 +22,6 @@ namespace OpenLedger.Application
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             });
 
-            services.AddOptionsWithValidateOnStart<DbOptions>("Db");
-            services.AddOptionsWithValidateOnStart<TokenOptions>("Token");
-
             return services;
         }
     }
