@@ -17,7 +17,7 @@ namespace OpenLedger.Infrastructure.Contexts
                 .AddEnvironmentVariables()
                 .Build();
 
-            var connectionString = configuration.GetConnectionString("2026");
+            var connectionString = configuration.GetConnectionString("Base");
 
             if (string.IsNullOrEmpty(connectionString))
             {
