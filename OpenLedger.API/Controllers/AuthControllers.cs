@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using OpenLedger.Application.Commands.Auth;
 using OpenLedger.Application.Commands.Auth.Login;
 using OpenLedger.Application.Commands.Auth.Refresh;
 using OpenLedger.Application.Commands.Auth.Register;
 using OpenLedger.Application.Commands.Auth.Revoke;
+using OpenLedger.Application.Dtos;
 
 namespace OpenLedger.API.Controllers
 {

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using OpenLedger.API.Middlewares;
 using OpenLedger.API.Services;
 using OpenLedger.Application;
 using OpenLedger.Application.Interfaces.Services;
@@ -12,8 +13,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddInfrastructure();
 builder.Services.AddApplication();
+
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddOptionsWithValidateOnStart<TokenOptions>().BindConfiguration("Token");
 
@@ -35,6 +38,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
+
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
 app.MapControllers();
 
