@@ -22,14 +22,15 @@ builder.Services.AddOptionsWithValidateOnStart<TokenOptions>().BindConfiguration
 
 builder.Services.AddDbContext<AppDbContext>((options) =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("2026") ?? string.Empty;
+    var connectionString = builder.Configuration.GetConnectionString("Base") ?? string.Empty;
     options.UseNpgsql(connectionString, b => b.MigrationsAssembly("OpenLedger.Infrastructure"));
 });
 
 var app = builder.Build();
 
-app.UseHttpsRedirection();
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -38,8 +39,6 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
-
-app.UseMiddleware<GlobalExceptionMiddleware>();
 
 app.MapControllers();
 

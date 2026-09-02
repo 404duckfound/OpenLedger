@@ -11,5 +11,18 @@ namespace OpenLedger.Domain.Entities.Auth
 
         public bool IsVerified { get; private set; }
         public UserRole Role { get; private set; }
+
+        public void Verify()
+        {
+            IsVerified = true;
+        }
+        public void SetRole(UserRole role)
+        {
+            Role = role;
+        }
+        public void SetTenantId(Guid tenantId)
+        {
+            TenantId = tenantId;
+        }
     }
 }
