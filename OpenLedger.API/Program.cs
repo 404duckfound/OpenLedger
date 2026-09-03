@@ -10,8 +10,20 @@ using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContext<AppDbContext>((options) =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("Base") ?? string.Empty;
+    options.UseNpgsql(connectionString, b => b.MigrationsAssembly("OpenLedger.Infrastructure"));
+});
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer((document, context,cancellationToken) =>
+    {
+        return Task.CompletedTask;
+    });
+});
+
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddInfrastructure();
@@ -19,12 +31,6 @@ builder.Services.AddApplication();
 
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddOptionsWithValidateOnStart<TokenOptions>().BindConfiguration("Token");
-
-builder.Services.AddDbContext<AppDbContext>((options) =>
-{
-    var connectionString = builder.Configuration.GetConnectionString("Base") ?? string.Empty;
-    options.UseNpgsql(connectionString, b => b.MigrationsAssembly("OpenLedger.Infrastructure"));
-});
 
 var app = builder.Build();
 

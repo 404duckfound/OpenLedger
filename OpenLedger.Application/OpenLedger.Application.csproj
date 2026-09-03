@@ -16,4 +16,8 @@
     <ProjectReference Include="..\OpenLedger.Domain\OpenLedger.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands\Tenant\Create\" />
+  </ItemGroup>
+
 </Project>

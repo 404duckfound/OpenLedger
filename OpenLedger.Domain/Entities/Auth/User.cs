@@ -26,3 +26,4 @@ namespace OpenLedger.Domain.Entities.Auth
         }
     }
 }
+         
