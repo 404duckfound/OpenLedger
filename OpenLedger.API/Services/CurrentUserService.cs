@@ -21,7 +21,7 @@ namespace OpenLedger.API.Services
         {
             get
             {
-                if (Guid.TryParse(context.HttpContext?.User.FindFirstValue(JwtRegisteredClaimNames.Sub), out Guid UserId))
+                if (Guid.TryParse(context.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier), out Guid UserId))
                 {
                     return UserId;
                 }

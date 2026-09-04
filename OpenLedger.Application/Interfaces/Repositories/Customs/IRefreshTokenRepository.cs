@@ -7,6 +7,6 @@ namespace OpenLedger.Application.Interfaces.Repositories.Customs
         Task<RefreshToken?> GetByTokenAsync(string token, CancellationToken cancellationToken = default);
         Task<List<RefreshToken>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default);
         Task AddAsync(RefreshToken refreshToken, CancellationToken cancellationToken = default);
-        Task UpdateAsync(RefreshToken refreshToken, CancellationToken cancellationToken = default);
+        Task Update(RefreshToken refreshToken, CancellationToken cancellationToken = default);
     }
 }

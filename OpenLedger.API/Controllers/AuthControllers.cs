@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OpenLedger.Application.Commands.Auth.Login;
 using OpenLedger.Application.Commands.Auth.Refresh;
@@ -30,6 +31,7 @@ namespace OpenLedger.API.Controllers
             var res = await mediator.Send(command);
             return Ok(res);
         }
+        [Authorize]
         [HttpPost("revoke")]
         public async Task<ActionResult> Revoke([FromBody] RevokeCommand command)
         {

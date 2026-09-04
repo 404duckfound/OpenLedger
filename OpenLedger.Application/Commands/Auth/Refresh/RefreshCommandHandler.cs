@@ -8,6 +8,7 @@ using OpenLedger.Application.Interfaces.Services;
 using OpenLedger.Application.Interfaces.Singletons;
 using OpenLedger.Application.Options;
 using OpenLedger.Domain.Entities.Auth;
+using System.Security.Claims;
 
 namespace OpenLedger.Application.Commands.Auth.Refresh
 {
@@ -15,7 +16,7 @@ namespace OpenLedger.Application.Commands.Auth.Refresh
     {
         public async Task<AuthResponseDto> Handle(RefreshCommand request, CancellationToken cancellationToken)
         {
-            var userIdClaim = tokenGenerator.GetClaimsFromJwt(request.AccessToken).FindFirst(JwtRegisteredClaimNames.Sub)?.Value ?? throw new UnauthorizedAccessException("Invalid access token claims.");
+            var userIdClaim = tokenGenerator.GetClaimsFromJwt(request.AccessToken).FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new UnauthorizedAccessException("Invalid access token claims.");
             var userId = Guid.Parse(userIdClaim);
 
             var user = await userRepository.GetByIdAsync(userId, cancellationToken) ?? throw new UnauthorizedAccessException("User not found.");
@@ -27,7 +28,7 @@ namespace OpenLedger.Application.Commands.Auth.Refresh
 
             refreshToken.Revoke(currentUser.IpAddress, "Replaced by new token.", request.RefreshToken);
 
-            await refreshTokenRepository.UpdateAsync(refreshToken, cancellationToken);
+            await refreshTokenRepository.Update(refreshToken, cancellationToken);
             await refreshTokenRepository.AddAsync(newRefreshToken, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 

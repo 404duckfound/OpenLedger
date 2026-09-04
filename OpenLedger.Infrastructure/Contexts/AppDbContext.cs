@@ -2,7 +2,6 @@
 using OpenLedger.Application.Interfaces.Services;
 using OpenLedger.Domain.Base;
 using OpenLedger.Domain.Entities.Auth;
-using OpenLedger.Domain.Interfaces;
 
 namespace OpenLedger.Infrastructure.Contexts
 {
@@ -24,20 +23,11 @@ namespace OpenLedger.Infrastructure.Contexts
                     var method = typeof(AppDbContext).GetMethod(nameof(ConfigureTenantFilter), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.MakeGenericMethod(entityType.ClrType);
                     method.Invoke(this, [modelBuilder]);
                 }
-                else if (typeof(IUserOwnedEntity).IsAssignableFrom(entityType.ClrType))
-                {
-                    var method = typeof(AppDbContext).GetMethod(nameof(ConfigureUserFilter), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.MakeGenericMethod(entityType.ClrType);
-                    method.Invoke(this, [modelBuilder]);
-                }
             }
         }
         private void ConfigureTenantFilter<T>(ModelBuilder modelBuilder) where T : BaseTenantEntity
         {
             modelBuilder.Entity<T>().HasQueryFilter(q => q.TenantId == userService.TenantId);
-        }
-        private void ConfigureUserFilter<T>(ModelBuilder modelBuilder) where T : class, IUserOwnedEntity
-        {
-            modelBuilder.Entity<T>().HasQueryFilter(q => q.UserId == userService.UserId);
         }
     }
 }

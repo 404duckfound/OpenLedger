@@ -15,15 +15,19 @@ namespace OpenLedger.Infrastructure.Repositories
 
         public async Task<RefreshToken?> GetByTokenAsync(string token, CancellationToken cancellationToken = default)
         {
-            return await context.RefreshTokens.FirstOrDefaultAsync(r => r.Token == token, cancellationToken);
+            return await context.RefreshTokens
+                .AsNoTracking()
+                .FirstOrDefaultAsync(r => r.Token == token, cancellationToken);
         }
 
         public async Task<List<RefreshToken>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
         {
-            return await context.RefreshTokens.Where(r => r.UserId == userId).ToListAsync(cancellationToken);
+            return await context.RefreshTokens
+                .AsNoTracking()
+                .Where(r => r.UserId == userId).ToListAsync(cancellationToken);
         }
 
-        public Task UpdateAsync(RefreshToken refreshToken, CancellationToken cancellationToken = default)
+        public Task Update(RefreshToken refreshToken, CancellationToken cancellationToken = default)
         {
             context.RefreshTokens.Update(refreshToken);
             return Task.CompletedTask;

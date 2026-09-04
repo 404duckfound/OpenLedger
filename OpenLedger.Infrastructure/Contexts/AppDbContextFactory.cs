@@ -10,10 +10,12 @@ namespace OpenLedger.Infrastructure.Contexts
         {
             var basePath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "../OpenLedger.API"));
 
+            string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
+
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(basePath)
-                .AddJsonFile("appsettings.json", optional: false)
-                .AddJsonFile("appsettings.Development.json", optional: true)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables()
                 .Build();
 
@@ -21,7 +23,7 @@ namespace OpenLedger.Infrastructure.Contexts
 
             if (string.IsNullOrEmpty(connectionString))
             {
-                throw new InvalidOperationException("Connection string could not be loaded from configuration.");
+                throw new InvalidOperationException($"Connection string 'Base' could not be loaded for environment '{environment}'.");
             }
 
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();

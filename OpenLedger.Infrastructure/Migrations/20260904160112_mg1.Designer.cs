@@ -12,7 +12,7 @@ using OpenLedger.Infrastructure.Contexts;
 namespace OpenLedger.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260902083138_mg1")]
+    [Migration("20260904160112_mg1")]
     partial class mg1
     {
         /// <inheritdoc />
