@@ -10,9 +10,9 @@ using OpenLedger.Domain.Entities.Auth;
 
 namespace OpenLedger.Application.Commands.Auth.Login
 {
-    public class LoginCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, IUserRepository userRepository, IPasswordHasher passwordHasher, ITokenGenerator tokenGenerator, ICurrentUserService currentUser, IOptions<TokenOptions> options) : IRequestHandler<LoginCommand, AuthResponseDto>
+    public class AuthLoginCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, IUserRepository userRepository, IPasswordHasher passwordHasher, ITokenGenerator tokenGenerator, ICurrentUserService currentUser, IOptions<TokenOptions> options) : IRequestHandler<AuthLoginCommand, AuthResponseDto>
     {
-        public async Task<AuthResponseDto> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<AuthResponseDto> Handle(AuthLoginCommand request, CancellationToken cancellationToken)
         {
             User user = await userRepository.GetByEmailAsync(request.Email, cancellationToken) ?? throw new UnauthorizedAccessException("Invalid email or password");
             if (!passwordHasher.VerifyPassword(request.Password, user.PasswordHash)) throw new UnauthorizedAccessException("Invalid email or password");

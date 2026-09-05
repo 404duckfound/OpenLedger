@@ -24,21 +24,16 @@ builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 builder.Services.AddOpenApi(options =>
 {
-    options.AddDocumentTransformer((document, context, cancellationToken) =>
+    options.AddDocumentTransformer((document, _, _) =>
     {
-        document.Components ??= new OpenApiComponents();
-        document.Components.SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
+        (document.Components ??= new()).SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
 
-        var bearerScheme = new OpenApiSecurityScheme
+        document.Components.SecuritySchemes!["Bearer"] = new OpenApiSecurityScheme
         {
             Type = SecuritySchemeType.Http,
             Scheme = "bearer",
-            BearerFormat = "JWT",
-            In = ParameterLocation.Header,
-            Name = "Authorization",
+            BearerFormat = "JWT"
         };
-
-        document.Components.SecuritySchemes["Bearer"] = bearerScheme;
 
         return Task.CompletedTask;
     });
@@ -47,11 +42,9 @@ builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
+}).AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = builder.Environment.IsProduction();
-    options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,

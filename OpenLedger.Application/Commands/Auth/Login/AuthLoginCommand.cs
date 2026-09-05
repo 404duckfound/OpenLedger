@@ -3,5 +3,5 @@ using OpenLedger.Application.Dtos;
 
 namespace OpenLedger.Application.Commands.Auth.Login
 {
-    public record LoginCommand(string Email, string Password) : IRequest<AuthResponseDto>;
+    public record AuthLoginCommand(string Email, string Password) : IRequest<AuthResponseDto>;
 }

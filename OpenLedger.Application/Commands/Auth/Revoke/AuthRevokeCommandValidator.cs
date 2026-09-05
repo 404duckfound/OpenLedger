@@ -2,7 +2,7 @@
 
 namespace OpenLedger.Application.Commands.Auth.Revoke
 {
-    public class RefreshCommandValidator : AbstractValidator<RevokeCommand>
+    public class RefreshCommandValidator : AbstractValidator<AuthRevokeCommand>
     {
         public RefreshCommandValidator()
         {

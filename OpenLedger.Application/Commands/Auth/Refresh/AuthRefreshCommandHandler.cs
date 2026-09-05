@@ -12,9 +12,9 @@ using System.Security.Claims;
 
 namespace OpenLedger.Application.Commands.Auth.Refresh
 {
-    public class RefreshCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, IUserRepository userRepository, ITokenGenerator tokenGenerator, ICurrentUserService currentUser, IOptions<TokenOptions> options) : IRequestHandler<RefreshCommand, AuthResponseDto>
+    public class AuthRefreshCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, IUserRepository userRepository, ITokenGenerator tokenGenerator, ICurrentUserService currentUser, IOptions<TokenOptions> options) : IRequestHandler<AuthRefreshCommand, AuthResponseDto>
     {
-        public async Task<AuthResponseDto> Handle(RefreshCommand request, CancellationToken cancellationToken)
+        public async Task<AuthResponseDto> Handle(AuthRefreshCommand request, CancellationToken cancellationToken)
         {
             var userIdClaim = tokenGenerator.GetClaimsFromJwt(request.AccessToken).FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new UnauthorizedAccessException("Invalid access token claims.");
             var userId = Guid.Parse(userIdClaim);

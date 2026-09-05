@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\Tenant\Create\" />
+    <Folder Include="Commands\User\" />
   </ItemGroup>
 
 </Project>

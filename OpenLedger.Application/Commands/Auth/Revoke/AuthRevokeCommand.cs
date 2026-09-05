@@ -2,5 +2,5 @@
 
 namespace OpenLedger.Application.Commands.Auth.Revoke
 {
-    public record RevokeCommand(string RefreshToken) : IRequest;
+    public record AuthRevokeCommand(string RefreshToken) : IRequest;
 }

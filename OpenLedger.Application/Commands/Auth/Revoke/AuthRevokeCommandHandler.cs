@@ -5,9 +5,9 @@ using OpenLedger.Application.Interfaces.Services;
 
 namespace OpenLedger.Application.Commands.Auth.Revoke
 {
-    public class RevokeCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, ICurrentUserService currentUser) : IRequestHandler<RevokeCommand>
+    public class AuthRevokeCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, ICurrentUserService currentUser) : IRequestHandler<AuthRevokeCommand>
     {
-        public async Task Handle(RevokeCommand request, CancellationToken cancellationToken)
+        public async Task Handle(AuthRevokeCommand request, CancellationToken cancellationToken)
         {
             var refreshToken = await refreshTokenRepository.GetByTokenAsync(request.RefreshToken, cancellationToken) ?? throw new UnauthorizedAccessException("Invalid refresh token.");
             

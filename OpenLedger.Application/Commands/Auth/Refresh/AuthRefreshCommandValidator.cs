@@ -2,9 +2,9 @@
 
 namespace OpenLedger.Application.Commands.Auth.Refresh
 {
-    public class RefreshCommandValidator : AbstractValidator<RefreshCommand>
+    public class AuthRefreshCommandValidator : AbstractValidator<AuthRefreshCommand>
     {
-        public RefreshCommandValidator()
+        public AuthRefreshCommandValidator()
         {
             RuleFor(r => r.RefreshToken)
                 .NotEmpty().WithMessage("Refresh token is required.")

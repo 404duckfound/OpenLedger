@@ -10,9 +10,9 @@ using OpenLedger.Domain.Entities.Auth;
 
 namespace OpenLedger.Application.Commands.Auth.Register
 {
-    public class RegisterCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, IUserRepository userRepository, IPasswordHasher passwordHasher, ITokenGenerator tokenGenerator, ICurrentUserService currentUser, IOptions<TokenOptions> options) : IRequestHandler<RegisterCommand, AuthResponseDto>
+    public class AuthRegisterCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, IUserRepository userRepository, IPasswordHasher passwordHasher, ITokenGenerator tokenGenerator, ICurrentUserService currentUser, IOptions<TokenOptions> options) : IRequestHandler<AuthRegisterCommand, AuthResponseDto>
     {
-        public async Task<AuthResponseDto> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public async Task<AuthResponseDto> Handle(AuthRegisterCommand request, CancellationToken cancellationToken)
         {
             if (await userRepository.ExistsByEmailAsync(request.Email, cancellationToken)) throw new InvalidOperationException("Email is already exists.");
 
