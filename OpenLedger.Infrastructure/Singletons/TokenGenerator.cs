@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using OpenLedger.Application.Dtos;
 using OpenLedger.Application.Interfaces.Singletons;
 using OpenLedger.Application.Options;
 using OpenLedger.Domain.Entities.Auth;
@@ -16,10 +17,10 @@ namespace OpenLedger.Infrastructure.Singletons
         {
             var claims = new List<Claim>
             {
-                new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new(JwtRegisteredClaimNames.Email, user.Email),
-                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new(JwtRegisteredClaimNames.Name, user.Name),
+                new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new(ClaimTypes.Email, user.Email),
+                new(ClaimTypes.SerialNumber, Guid.NewGuid().ToString()),
+                new(ClaimTypes.Name, user.Name),
                 new(ClaimTypes.Role, user.Role.ToString()),
             };
 
@@ -37,10 +38,11 @@ namespace OpenLedger.Infrastructure.Singletons
 
             return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
         }
-        public string GenerateRefreshToken()
+        public RefreshTokenDto GenerateRefreshToken()
         {
             var bytes = RandomNumberGenerator.GetBytes(64);
-            return Convert.ToBase64String(bytes);
+            var refreshToken = Convert.ToBase64String(bytes);
+            return new RefreshTokenDto(refreshToken, DateTime.UtcNow.AddDays(tokenOptions.Value.RefreshExpiresDays));
         }
         public ClaimsPrincipal GetClaimsFromJwt(string token)
         {

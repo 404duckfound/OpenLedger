@@ -8,6 +8,7 @@ using OpenLedger.Application.Interfaces.Services;
 using OpenLedger.Application.Options;
 using OpenLedger.Infrastructure;
 using Scalar.AspNetCore;
+using System.Net;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -61,6 +62,13 @@ builder.Services.AddAuthentication(options =>
 var app = builder.Build();
 
 app.UseMiddleware<GlobalExceptionMiddleware>();
+app.UseStatusCodePages(async context =>
+{
+    if (context.HttpContext.Response.StatusCode == (int)HttpStatusCode.NotFound)
+    {
+        throw new NotFoundException();
+    }
+});
 
 app.UseHttpsRedirection();
 

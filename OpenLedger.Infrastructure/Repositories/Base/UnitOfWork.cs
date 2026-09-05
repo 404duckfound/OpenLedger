@@ -8,7 +8,6 @@ namespace OpenLedger.Infrastructure.Repositories.Base
         public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             await context.SaveChangesAsync(cancellationToken);
-            return; 
         }
     }
 }

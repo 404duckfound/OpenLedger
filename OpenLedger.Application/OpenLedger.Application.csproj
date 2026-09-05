@@ -16,8 +16,4 @@
     <ProjectReference Include="..\OpenLedger.Domain\OpenLedger.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Commands\User\" />
-  </ItemGroup>
-
 </Project>

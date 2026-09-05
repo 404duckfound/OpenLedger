@@ -8,7 +8,7 @@ namespace OpenLedger.Application.Commands.Auth.Revoke
         {
             RuleFor(r => r.RefreshToken)
                 .NotEmpty().WithMessage("Refresh token is required.")
-                .MaximumLength(100);
+                .MaximumLength(100).WithMessage("Refresh token is too long.");
         }
     }
 }

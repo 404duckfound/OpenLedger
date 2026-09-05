@@ -14,7 +14,7 @@ namespace OpenLedger.Infrastructure.Repositories
 
         public async Task<bool> IsTenantExistsAsync(Guid tenantId, CancellationToken cancellationToken = default)
         {
-           return await context.Tenants.AnyAsync(t => t.Id == tenantId, cancellationToken);
+           return await context.Tenants.AsNoTracking().AnyAsync(t => t.Id == tenantId, cancellationToken);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using OpenLedger.Application.Dtos;
+using OpenLedger.Application.Exceptions;
 using System.Diagnostics;
 using System.Net;
 
@@ -16,13 +17,13 @@ namespace OpenLedger.API.Middlewares
             catch (Exception ex)
             {
                 var traceId = Activity.Current?.Id ?? context.TraceIdentifier;
-                logger.LogError(ex, "An unhandled exception occurred while processing the request at {TraceId}, {Timestamp}, {Message}", traceId, DateTime.UtcNow, ex.Message);
+                logger.LogWarning(ex, "An unhandled exception occurred while processing request {TraceId}", traceId);
 
                 await HandleExceptionAsync(context, ex, traceId);
             }
         }
         public async Task HandleExceptionAsync(HttpContext context, Exception exception, string traceId)
-        {            
+        {
             var errors = new List<string>();
 
             switch (exception)
@@ -34,22 +35,22 @@ namespace OpenLedger.API.Middlewares
                         errors.Add(error.ErrorMessage);
                     }
                     break;
-                case ArgumentNullException argumentNullException:
+                case BadRequestException badRequestException:
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    errors.Add(argumentNullException.Message);
+                    errors.Add(badRequestException.Message);
                     break;
-                case UnauthorizedAccessException unauthorizedAccessException:
+                case UnauthorizedException unauthorizedException:
                     context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                    errors.Add(unauthorizedAccessException.Message);
+                    errors.Add(unauthorizedException.Message);
                     break;
-                case InvalidOperationException invalidOperationException:
-                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    errors.Add(invalidOperationException.Message);
+                case NotFoundException notFoundException:
+                    context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                    errors.Add(notFoundException.Message);
                     break;
                 default:
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     errors.Add(env.IsDevelopment() ? exception.ToString() : "An unexpected error occurred.");
-                break;
+                    break;
             }
 
             var ErrorResponse = new ErrorResponseDto(

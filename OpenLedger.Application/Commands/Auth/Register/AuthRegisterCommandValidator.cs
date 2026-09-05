@@ -1,17 +1,22 @@
 ﻿using FluentValidation;
+using OpenLedger.Application.Interfaces.Repositories.Customs;
 using System.Text.RegularExpressions;
 
 namespace OpenLedger.Application.Commands.Auth.Register
 {
     public class AuthRegisterCommandValidator : AbstractValidator<AuthRegisterCommand>
     {
-        private static readonly Regex NameRegex = new(@"^[a-zA-ZğüşıöçĞÜŞİÖÇ\s]+$", RegexOptions.Compiled);
-        private static readonly Regex PasswordRegex = new(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$", RegexOptions.Compiled);
-        public AuthRegisterCommandValidator()
+        private readonly IUserRepository _userRepository;
+        private readonly Regex NameRegex = new(@"^[a-zA-ZğüşıöçĞÜŞİÖÇ\s]+$", RegexOptions.Compiled);
+        private readonly Regex PasswordRegex = new(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$", RegexOptions.Compiled);
+        public AuthRegisterCommandValidator(IUserRepository userRepository)
         {
+            _userRepository = userRepository;
+
             RuleFor(r => r.Email)
                 .NotEmpty().WithMessage("Email address is required.")
-                .EmailAddress().WithMessage("Please enter a valid email address.");
+                .EmailAddress().WithMessage("Please enter a valid email address.")
+                .MustAsync(IsUniqueEmail).WithMessage("Email address is already in use.");
 
             RuleFor(r => r.Name)
                 .NotEmpty().WithMessage("Name is required.")
@@ -25,6 +30,10 @@ namespace OpenLedger.Application.Commands.Auth.Register
             RuleFor(r => r.ConfirmPassword)
                 .NotEmpty().WithMessage("Confirm password is required.")
                 .Equal(r => r.Password).WithMessage("Passwords do not match.");
+        }
+        public async Task<bool> IsUniqueEmail(string email, CancellationToken cancellationToken)
+        {
+            return !await _userRepository.ExistsByEmailAsync(email, cancellationToken);
         }
     }
 }

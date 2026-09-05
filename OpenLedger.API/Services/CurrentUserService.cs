@@ -1,5 +1,5 @@
-﻿using OpenLedger.Application.Interfaces.Services;
-using System.IdentityModel.Tokens.Jwt;
+﻿using OpenLedger.Application.Exceptions;
+using OpenLedger.Application.Interfaces.Services;
 using System.Security.Claims;
 
 namespace OpenLedger.API.Services
@@ -14,7 +14,7 @@ namespace OpenLedger.API.Services
                 {
                     return TenantId;
                 }
-                return Guid.Empty;
+                throw new BadRequestException("No tenant associated with this user.");
             }
         }
         public Guid UserId
@@ -25,7 +25,7 @@ namespace OpenLedger.API.Services
                 {
                     return UserId;
                 }
-                return Guid.Empty;
+                throw new UnauthorizedException("User is not authenticated.");
             }
         }
         public string IpAddress { get => context.HttpContext?.Connection.RemoteIpAddress?.ToString() ?? "Unknown"; }

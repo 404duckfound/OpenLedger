@@ -12,6 +12,7 @@ namespace OpenLedger.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Consumes("application/json")]
     public class AuthControllers(IMediator mediator) : ControllerBase
     {
         [HttpPost("register")]
@@ -40,7 +41,7 @@ namespace OpenLedger.API.Controllers
             return Ok();
         }
         [Authorize]
-        [HttpPost("revokeall")]
+        [HttpPost("revoke-all")]
         public async Task<ActionResult> RevokeAll([FromBody] AuthRevokeAllCommand command)
         {
             await mediator.Send(command);
