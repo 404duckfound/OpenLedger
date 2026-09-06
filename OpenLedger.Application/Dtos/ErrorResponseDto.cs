@@ -2,11 +2,10 @@
 {
     public record ErrorResponseDto(int StatusCode, string ExceptionType, List<string> Errors, string TraceId)
     {
-        public int StatusCode { get; set; } = StatusCode;
-        public string ExceptionType { get; set; } = ExceptionType;
-        public List<string> Errors { get; set; } = Errors;
-        public string TraceId { get; set; } = TraceId;
-
-        public DateTime Timestamp { get; set; } = DateTime.UtcNow;
+        public int StatusCode { get; private set; } = StatusCode;
+        public string ExceptionType { get; private set; } = ExceptionType;
+        public List<string> Errors { get; private set; } = Errors;
+        public string TraceId { get; private set; } = TraceId;
+        public DateTime Timestamp { get; private set; } = DateTime.UtcNow;
     }
 }

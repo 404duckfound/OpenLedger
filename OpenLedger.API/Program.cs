@@ -4,6 +4,7 @@ using Microsoft.OpenApi;
 using OpenLedger.API.Middlewares;
 using OpenLedger.API.Services;
 using OpenLedger.Application;
+using OpenLedger.Application.Exceptions;
 using OpenLedger.Application.Interfaces.Services;
 using OpenLedger.Application.Options;
 using OpenLedger.Infrastructure;
@@ -67,6 +68,11 @@ app.UseStatusCodePages(async context =>
     if (context.HttpContext.Response.StatusCode == (int)HttpStatusCode.NotFound)
     {
         throw new NotFoundException();
+    }
+    else if(context.HttpContext.Response.StatusCode == (int)HttpStatusCode.MethodNotAllowed)
+    {
+        throw new MethodNotAllowedException();
+
     }
 });
 

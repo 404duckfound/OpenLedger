@@ -2,6 +2,6 @@
 {
     public class NotFoundException : Exception
     {
-        public NotFoundException(string message = "Not found.") : base(message) { }
+        public NotFoundException(string message = "Resource not found.") : base(message) { }
     }
 }

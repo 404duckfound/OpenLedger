@@ -47,6 +47,10 @@ namespace OpenLedger.API.Middlewares
                     context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                     errors.Add(notFoundException.Message);
                     break;
+                case MethodNotAllowedException methodNotAllowedException:
+                    context.Response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
+                    errors.Add(methodNotAllowedException.Message);
+                    break;
                 default:
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     errors.Add(env.IsDevelopment() ? exception.ToString() : "An unexpected error occurred.");

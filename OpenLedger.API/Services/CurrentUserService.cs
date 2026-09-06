@@ -14,7 +14,7 @@ namespace OpenLedger.API.Services
                 {
                     return TenantId;
                 }
-                throw new BadRequestException("No tenant associated with this user.");
+                return Guid.Empty;
             }
         }
         public Guid UserId

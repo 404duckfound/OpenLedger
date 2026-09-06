@@ -24,11 +24,12 @@ namespace OpenLedger.Infrastructure.Repositories
                 .Where(r => r.UserId == userId)
                 .ToListAsync(cancellationToken);
         }
-        public async Task DeleteAllByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
+        public async Task RevokeAllByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
         {
             await context.RefreshTokens
-                .Where(r => r.UserId == userId)
-                .ExecuteDeleteAsync(cancellationToken);
+                .Where(r => r.UserId == userId && r.IsActive)
+                .AsNoTracking()
+                .ExecuteUpdateAsync(r => r.SetProperty(rt => rt.RevokedAt, DateTime.UtcNow), cancellationToken);
         }
         public void Update(RefreshToken refreshToken)
         {

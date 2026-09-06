@@ -20,6 +20,16 @@ namespace OpenLedger.Application.Commands.Auth.Refresh
             var user = await userRepository.GetByIdAsync(userId, cancellationToken) ?? throw new BadRequestException("Invalid token or user.");
             var refreshToken = await refreshTokenRepository.GetByTokenAsync(request.RefreshToken, cancellationToken);
             if (refreshToken is null || refreshToken.UserId != userId) throw new BadRequestException("Invalid token or user.");
+            else if (!refreshToken.IsActive)
+            {
+                if (!refreshToken.IsRevoked && refreshToken.IsExpired)
+                {
+                    refreshToken.Revoke(currentUser.IpAddress, "Expired token");
+                    refreshTokenRepository.Update(refreshToken);
+                    await unitOfWork.SaveChangesAsync(cancellationToken);
+                }
+                throw new BadRequestException("Token is not active.");
+            }
 
             var jwt = tokenGenerator.GenerateJwtToken(user);
             var generatedRefreshToken = tokenGenerator.GenerateRefreshToken();

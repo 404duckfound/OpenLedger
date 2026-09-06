@@ -9,7 +9,7 @@ namespace OpenLedger.Application.Commands.Auth.RevokeAll
     {
         public async Task Handle(AuthRevokeAllCommand request, CancellationToken cancellationToken)
         {
-            await refreshTokenRepository.DeleteAllByUserIdAsync(currentUserService.UserId, cancellationToken);
+            await refreshTokenRepository.RevokeAllByUserIdAsync(currentUserService.UserId, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
