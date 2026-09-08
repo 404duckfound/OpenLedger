@@ -14,7 +14,7 @@ namespace OpenLedger.Application.Commands.Auth.Revoke
 
             if (refreshToken is null || refreshToken.UserId != currentUser.UserId) throw new BadRequestException("Invalid refresh token.");
 
-            refreshToken.Revoke(currentUser.IpAddress, "Revoked");
+            refreshToken.Revoke(currentUser.IpAddress);
             refreshTokenRepository.Update(refreshToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
         }

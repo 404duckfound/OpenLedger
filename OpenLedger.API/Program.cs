@@ -9,6 +9,7 @@ using OpenLedger.Application.Interfaces.Services;
 using OpenLedger.Application.Options;
 using OpenLedger.Infrastructure;
 using Scalar.AspNetCore;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Text;
 
@@ -42,6 +43,7 @@ builder.Services.AddOpenApi(options =>
 });
 builder.Services.AddAuthentication(options =>
 {
+    JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
@@ -49,6 +51,7 @@ builder.Services.AddAuthentication(options =>
     options.RequireHttpsMetadata = builder.Environment.IsProduction();
     options.TokenValidationParameters = new TokenValidationParameters
     {
+        RoleClaimType = "role",
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
@@ -69,7 +72,7 @@ app.UseStatusCodePages(async context =>
     {
         throw new NotFoundException();
     }
-    else if(context.HttpContext.Response.StatusCode == (int)HttpStatusCode.MethodNotAllowed)
+    else if (context.HttpContext.Response.StatusCode == (int)HttpStatusCode.MethodNotAllowed)
     {
         throw new MethodNotAllowedException();
 

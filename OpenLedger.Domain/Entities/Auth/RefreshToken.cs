@@ -1,4 +1,5 @@
 ﻿using OpenLedger.Domain.Base;
+using System.ComponentModel.DataAnnotations;
 
 namespace OpenLedger.Domain.Entities.Auth
 {
@@ -21,9 +22,9 @@ namespace OpenLedger.Domain.Entities.Auth
         public bool IsActive { get => !IsRevoked && !IsExpired; }
 
 
-        public void Revoke(string revokedByIp, string reason, string? replacedByToken = null)
+        public void Revoke(string revokedByIp, string reason = "Revoked by user.", string? replacedByToken = null)
         {
-            if (IsRevoked) throw new Exception("Token is already revoked.");
+            if (IsRevoked) throw new ValidationException("Invalid refresh token.");
 
             RevokedAt = DateTime.UtcNow;
             RevokedByIp = revokedByIp;

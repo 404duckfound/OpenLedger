@@ -5,6 +5,7 @@ using OpenLedger.Application.Interfaces.Repositories.Base;
 using OpenLedger.Application.Interfaces.Repositories.Customs;
 using OpenLedger.Application.Interfaces.Services;
 using OpenLedger.Application.Interfaces.Singletons;
+using OpenLedger.Domain.Constants;
 using OpenLedger.Domain.Entities.Auth;
 using System.Security.Claims;
 
@@ -14,7 +15,7 @@ namespace OpenLedger.Application.Commands.Auth.Refresh
     {
         public async Task<AuthResponseDto> Handle(AuthRefreshCommand request, CancellationToken cancellationToken)
         {
-            var userIdClaim = tokenGenerator.GetClaimsFromJwt(request.AccessToken).FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userIdClaim = tokenGenerator.GetClaimsFromJwt(request.AccessToken).FindFirst(ApplicationClaims.UserId)?.Value;
             if (userIdClaim is null || !Guid.TryParse(userIdClaim, out var userId)) throw new UnauthorizedException("Invalid token claims.");
 
             var user = await userRepository.GetByIdAsync(userId, cancellationToken) ?? throw new BadRequestException("Invalid token or user.");

@@ -24,12 +24,16 @@ namespace OpenLedger.Infrastructure.Repositories
                 .Where(r => r.UserId == userId)
                 .ToListAsync(cancellationToken);
         }
-        public async Task RevokeAllByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
+        public async Task RevokeAllByUserIdAsync(Guid userId, string revokedByIp, CancellationToken cancellationToken = default)
         {
-            await context.RefreshTokens
-                .Where(r => r.UserId == userId && r.IsActive)
-                .AsNoTracking()
-                .ExecuteUpdateAsync(r => r.SetProperty(rt => rt.RevokedAt, DateTime.UtcNow), cancellationToken);
+            var refreshTokens = await context.RefreshTokens
+                .Where(r => r.UserId == userId && r.RevokedAt <= DateTime.MinValue && r.ExpiresAt > DateTime.UtcNow)
+                .ToListAsync(cancellationToken);
+            
+            foreach (var token in refreshTokens)
+            {
+                token.Revoke(revokedByIp);
+            }
         }
         public void Update(RefreshToken refreshToken)
         {

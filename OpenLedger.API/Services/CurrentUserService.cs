@@ -1,5 +1,7 @@
 ﻿using OpenLedger.Application.Exceptions;
 using OpenLedger.Application.Interfaces.Services;
+using OpenLedger.Domain.Constants;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace OpenLedger.API.Services
@@ -10,7 +12,7 @@ namespace OpenLedger.API.Services
         {
             get
             {
-                if (Guid.TryParse(context.HttpContext?.User.FindFirstValue("TenantId"), out Guid TenantId))
+                if (Guid.TryParse(context.HttpContext?.User.FindFirstValue(ApplicationClaims.TenantId), out Guid TenantId))
                 {
                     return TenantId;
                 }
@@ -21,7 +23,7 @@ namespace OpenLedger.API.Services
         {
             get
             {
-                if (Guid.TryParse(context.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier), out Guid UserId))
+                if (Guid.TryParse(context.HttpContext?.User.FindFirstValue(ApplicationClaims.UserId), out Guid UserId))
                 {
                     return UserId;
                 }
