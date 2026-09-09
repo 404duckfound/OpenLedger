@@ -7,6 +7,7 @@ using OpenLedger.Application;
 using OpenLedger.Application.Exceptions;
 using OpenLedger.Application.Interfaces.Services;
 using OpenLedger.Application.Options;
+using OpenLedger.Domain.Constants;
 using OpenLedger.Infrastructure;
 using Scalar.AspNetCore;
 using System.IdentityModel.Tokens.Jwt;
@@ -51,7 +52,7 @@ builder.Services.AddAuthentication(options =>
     options.RequireHttpsMetadata = builder.Environment.IsProduction();
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        RoleClaimType = "role",
+        RoleClaimType = ApplicationClaims.Role,
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,

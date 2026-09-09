@@ -24,7 +24,7 @@ namespace OpenLedger.Application.Commands.AuthCommands.Refresh
 
             var jwt = tokenGenerator.GenerateJwtToken(user);
             var generatedRefreshToken = tokenGenerator.GenerateRefreshToken();
-            var newRefreshToken = new RefreshToken(user.Id, generatedRefreshToken.Token, generatedRefreshToken.ExpiresAt, currentUser.IpAddress, currentUser.UserAgent);
+            var newRefreshToken = new RefreshToken(user.Id, generatedRefreshToken.RefreshToken, generatedRefreshToken.RefreshTokenExpires, currentUser.IpAddress, currentUser.UserAgent);
 
             refreshToken.Revoke(currentUser.IpAddress, "Replaced by new token", request.RefreshToken);
             refreshTokenRepository.Update(refreshToken);

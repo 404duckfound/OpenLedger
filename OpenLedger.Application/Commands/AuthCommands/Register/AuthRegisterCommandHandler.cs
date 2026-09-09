@@ -16,13 +16,13 @@ namespace OpenLedger.Application.Commands.AuthCommands.Register
             var user = new User(request.Name, request.Email, passwordHash);
             var jwt = tokenGenerator.GenerateJwtToken(user);
             var createRefreshToken = tokenGenerator.GenerateRefreshToken();
-            var refreshToken = new RefreshToken(user.Id, createRefreshToken.Token, createRefreshToken.ExpiresAt, currentUser.IpAddress, currentUser.UserAgent);
+            var refreshToken = new RefreshToken(user.Id, createRefreshToken.RefreshToken, createRefreshToken.RefreshTokenExpires, currentUser.IpAddress, currentUser.UserAgent);
 
             await userRepository.AddAsync(user, cancellationToken);
             await refreshTokenRepository.AddAsync(refreshToken, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return new AuthResponseDto(jwt, refreshToken.Token!, refreshToken.ExpiresAt);
+            return new AuthResponseDto(jwt, refreshToken.Token, refreshToken.ExpiresAt);
         }
     }
 }

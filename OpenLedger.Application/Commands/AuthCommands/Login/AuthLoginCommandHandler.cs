@@ -18,12 +18,12 @@ namespace OpenLedger.Application.Commands.AuthCommands.Login
 
             var jwt = tokenGenerator.GenerateJwtToken(user);
             var generatedRefreshToken = tokenGenerator.GenerateRefreshToken();
-            var refreshToken = new RefreshToken(user.Id, generatedRefreshToken.Token, generatedRefreshToken.ExpiresAt, currentUser.IpAddress, currentUser.UserAgent);
+            var refreshToken = new RefreshToken(user.Id, generatedRefreshToken.RefreshToken, generatedRefreshToken.RefreshTokenExpires, currentUser.IpAddress, currentUser.UserAgent);
 
             await refreshTokenRepository.AddAsync(refreshToken, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return new AuthResponseDto(jwt, refreshToken.Token!, refreshToken.ExpiresAt);
+            return new AuthResponseDto(jwt, refreshToken.Token, refreshToken.ExpiresAt);
         }
     }
 }

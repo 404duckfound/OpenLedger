@@ -17,6 +17,7 @@ namespace OpenLedger.Infrastructure
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+            services.AddScoped<ITenantRepository, TenantRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
