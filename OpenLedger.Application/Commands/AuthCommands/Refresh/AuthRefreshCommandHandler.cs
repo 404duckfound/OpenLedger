@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using OpenLedger.Application.Dtos;
+using OpenLedger.Application.Dtos.Auth;
 using OpenLedger.Application.Exceptions;
 using OpenLedger.Application.Interfaces.Repositories.Base;
 using OpenLedger.Application.Interfaces.Repositories.Customs;
@@ -7,9 +7,8 @@ using OpenLedger.Application.Interfaces.Services;
 using OpenLedger.Application.Interfaces.Singletons;
 using OpenLedger.Domain.Constants;
 using OpenLedger.Domain.Entities.Auth;
-using System.Security.Claims;
 
-namespace OpenLedger.Application.Commands.Auth.Refresh
+namespace OpenLedger.Application.Commands.AuthCommands.Refresh
 {
     public class AuthRefreshCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, IUserRepository userRepository, ITokenGenerator tokenGenerator, ICurrentUserService currentUser) : IRequestHandler<AuthRefreshCommand, AuthResponseDto>
     {
@@ -21,16 +20,7 @@ namespace OpenLedger.Application.Commands.Auth.Refresh
             var user = await userRepository.GetByIdAsync(userId, cancellationToken) ?? throw new BadRequestException("Invalid token or user.");
             var refreshToken = await refreshTokenRepository.GetByTokenAsync(request.RefreshToken, cancellationToken);
             if (refreshToken is null || refreshToken.UserId != userId) throw new BadRequestException("Invalid token or user.");
-            else if (!refreshToken.IsActive)
-            {
-                if (!refreshToken.IsRevoked && refreshToken.IsExpired)
-                {
-                    refreshToken.Revoke(currentUser.IpAddress, "Expired token");
-                    refreshTokenRepository.Update(refreshToken);
-                    await unitOfWork.SaveChangesAsync(cancellationToken);
-                }
-                throw new BadRequestException("Token is not active.");
-            }
+            else if (!refreshToken.IsActive) throw new BadRequestException("Token is not active.");
 
             var jwt = tokenGenerator.GenerateJwtToken(user);
             var generatedRefreshToken = tokenGenerator.GenerateRefreshToken();

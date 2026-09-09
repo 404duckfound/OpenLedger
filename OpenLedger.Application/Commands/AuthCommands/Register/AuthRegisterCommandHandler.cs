@@ -1,12 +1,12 @@
 ﻿using MediatR;
-using OpenLedger.Application.Dtos;
+using OpenLedger.Application.Dtos.Auth;
 using OpenLedger.Application.Interfaces.Repositories.Base;
 using OpenLedger.Application.Interfaces.Repositories.Customs;
 using OpenLedger.Application.Interfaces.Services;
 using OpenLedger.Application.Interfaces.Singletons;
 using OpenLedger.Domain.Entities.Auth;
 
-namespace OpenLedger.Application.Commands.Auth.Register
+namespace OpenLedger.Application.Commands.AuthCommands.Register
 {
     public class AuthRegisterCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, IUserRepository userRepository, IPasswordHasher passwordHasher, ITokenGenerator tokenGenerator, ICurrentUserService currentUser) : IRequestHandler<AuthRegisterCommand, AuthResponseDto>
     {

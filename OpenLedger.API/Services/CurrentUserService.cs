@@ -1,7 +1,6 @@
 ﻿using OpenLedger.Application.Exceptions;
 using OpenLedger.Application.Interfaces.Services;
 using OpenLedger.Domain.Constants;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace OpenLedger.API.Services

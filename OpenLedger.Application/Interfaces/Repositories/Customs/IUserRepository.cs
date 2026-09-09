@@ -8,5 +8,6 @@ namespace OpenLedger.Application.Interfaces.Repositories.Customs
         Task<User?> GetByIdAsync(Guid userId, CancellationToken cancellationToken = default);
         Task<bool> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default);
         Task AddAsync(User user, CancellationToken cancellationToken = default);
+        void Update(User user);
     }
 }

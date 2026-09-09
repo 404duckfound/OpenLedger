@@ -1,4 +1,4 @@
-﻿namespace OpenLedger.Application.Dtos
+﻿namespace OpenLedger.Application.Dtos.Error
 {
     public record ErrorResponseDto(int StatusCode, string ExceptionType, List<string> Errors, string TraceId)
     {

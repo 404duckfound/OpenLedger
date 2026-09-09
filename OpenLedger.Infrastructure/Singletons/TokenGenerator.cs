@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using OpenLedger.Application.Dtos;
+using OpenLedger.Application.Dtos.Auth;
 using OpenLedger.Application.Interfaces.Singletons;
 using OpenLedger.Application.Options;
 using OpenLedger.Domain.Constants;

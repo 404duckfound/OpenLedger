@@ -4,11 +4,11 @@ using OpenLedger.Application.Interfaces.Repositories.Base;
 using OpenLedger.Application.Interfaces.Repositories.Customs;
 using OpenLedger.Application.Interfaces.Services;
 
-namespace OpenLedger.Application.Commands.Auth.Revoke
+namespace OpenLedger.Application.Commands.AuthCommands.Logout
 {
-    public class AuthRevokeCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, ICurrentUserService currentUser) : IRequestHandler<AuthRevokeCommand>
+    public class AuthLogoutCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, ICurrentUserService currentUser) : IRequestHandler<AuthLogoutCommand, string>
     {
-        public async Task Handle(AuthRevokeCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(AuthLogoutCommand request, CancellationToken cancellationToken)
         {
             var refreshToken = await refreshTokenRepository.GetByTokenAsync(request.RefreshToken, cancellationToken);
 
@@ -17,6 +17,8 @@ namespace OpenLedger.Application.Commands.Auth.Revoke
             refreshToken.Revoke(currentUser.IpAddress);
             refreshTokenRepository.Update(refreshToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return "Logged out successfully.";
         }
     }
 }

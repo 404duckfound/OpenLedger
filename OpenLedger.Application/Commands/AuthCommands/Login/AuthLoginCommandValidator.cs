@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using System.Text.RegularExpressions;
 
-namespace OpenLedger.Application.Commands.Auth.Login
+namespace OpenLedger.Application.Commands.AuthCommands.Login
 {
     public class AuthLoginCommandValidator : AbstractValidator<AuthLoginCommand>
     {

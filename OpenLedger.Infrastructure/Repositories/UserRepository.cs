@@ -29,7 +29,13 @@ namespace OpenLedger.Infrastructure.Repositories
         public async Task<User?> GetByIdAsync(Guid userId, CancellationToken cancellationToken = default)
         {
             return await context.Users
-                .AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+        }
+
+        public void Update(User user)
+        {
+            context.Users.Update(user);
         }
     }
 }

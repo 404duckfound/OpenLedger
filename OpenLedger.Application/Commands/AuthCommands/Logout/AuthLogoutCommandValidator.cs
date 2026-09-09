@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace OpenLedger.Application.Commands.Auth.Revoke
+namespace OpenLedger.Application.Commands.AuthCommands.Logout
 {
-    public class RefreshCommandValidator : AbstractValidator<AuthRevokeCommand>
+    public class AuthLogoutCommandValidator : AbstractValidator<AuthLogoutCommand>
     {
-        public RefreshCommandValidator()
+        public AuthLogoutCommandValidator()
         {
             RuleFor(r => r.RefreshToken)
                 .NotEmpty().WithMessage("Refresh token is required.")

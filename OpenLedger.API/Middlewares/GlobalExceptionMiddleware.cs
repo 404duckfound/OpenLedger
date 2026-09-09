@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using OpenLedger.Application.Dtos;
+using OpenLedger.Application.Dtos.Error;
 using OpenLedger.Application.Exceptions;
 using System.Diagnostics;
 using System.Net;

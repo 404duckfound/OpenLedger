@@ -21,7 +21,6 @@ namespace OpenLedger.Domain.Entities.Auth
         public bool IsExpired { get => ExpiresAt < DateTime.UtcNow; }
         public bool IsActive { get => !IsRevoked && !IsExpired; }
 
-
         public void Revoke(string revokedByIp, string reason = "Revoked by user.", string? replacedByToken = null)
         {
             if (IsRevoked) throw new ValidationException("Invalid refresh token.");

@@ -1,12 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OpenLedger.Application.Commands.Auth.Login;
-using OpenLedger.Application.Commands.Auth.Refresh;
-using OpenLedger.Application.Commands.Auth.Register;
-using OpenLedger.Application.Commands.Auth.Revoke;
-using OpenLedger.Application.Commands.Auth.RevokeAll;
-using OpenLedger.Application.Dtos;
+using OpenLedger.Application.Commands.AuthCommands.Login;
+using OpenLedger.Application.Commands.AuthCommands.Logout;
+using OpenLedger.Application.Commands.AuthCommands.LogoutAll;
+using OpenLedger.Application.Commands.AuthCommands.Refresh;
+using OpenLedger.Application.Commands.AuthCommands.Register;
+using OpenLedger.Application.Dtos.Auth;
 
 namespace OpenLedger.API.Controllers
 {
@@ -34,18 +34,18 @@ namespace OpenLedger.API.Controllers
             return Ok(res);
         }
         [Authorize]
-        [HttpPost("revoke")]
-        public async Task<ActionResult> Revoke([FromBody] AuthRevokeCommand command)
+        [HttpPost("logout")]
+        public async Task<ActionResult<string>> Logout([FromBody] AuthLogoutCommand command)
         {
-            await mediator.Send(command);
-            return Ok();
+            var res = await mediator.Send(command);
+            return Ok(res);
         }
         [Authorize]
-        [HttpPost("revoke-all")]
-        public async Task<ActionResult> RevokeAll([FromBody] AuthRevokeAllCommand command)
+        [HttpPost("logout-all")]
+        public async Task<ActionResult<string>> LogoutAll([FromBody] AuthLogoutAllCommand command)
         {
-            await mediator.Send(command);
-            return Ok();
+            var res = await mediator.Send(command);
+            return Ok(res);
         }
     }
 }

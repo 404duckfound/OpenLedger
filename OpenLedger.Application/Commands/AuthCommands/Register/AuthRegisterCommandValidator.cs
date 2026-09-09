@@ -2,12 +2,11 @@
 using OpenLedger.Application.Interfaces.Repositories.Customs;
 using System.Text.RegularExpressions;
 
-namespace OpenLedger.Application.Commands.Auth.Register
+namespace OpenLedger.Application.Commands.AuthCommands.Register
 {
     public class AuthRegisterCommandValidator : AbstractValidator<AuthRegisterCommand>
     {
         private readonly IUserRepository _userRepository;
-        private readonly Regex NameRegex = new(@"^[a-zA-ZğüşıöçĞÜŞİÖÇ\s]+$", RegexOptions.Compiled);
         private readonly Regex PasswordRegex = new(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$", RegexOptions.Compiled);
         public AuthRegisterCommandValidator(IUserRepository userRepository)
         {
@@ -15,12 +14,13 @@ namespace OpenLedger.Application.Commands.Auth.Register
 
             RuleFor(r => r.Email)
                 .NotEmpty().WithMessage("Email address is required.")
+                .MaximumLength(100).WithMessage("Email address must not exceed 100 characters.")
                 .EmailAddress().WithMessage("Please enter a valid email address.")
                 .MustAsync(IsUniqueEmail).WithMessage("Email address is already in use.");
 
             RuleFor(r => r.Name)
                 .NotEmpty().WithMessage("Name is required.")
-                .Matches(NameRegex).WithMessage("Name can only contain letters and spaces.");
+                .MaximumLength(50).WithMessage("Name must not exceed 50 characters.");
 
             RuleFor(r => r.Password)
                 .NotEmpty().WithMessage("Password is required.")

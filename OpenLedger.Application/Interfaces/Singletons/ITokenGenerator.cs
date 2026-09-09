@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using OpenLedger.Application.Dtos;
+using OpenLedger.Application.Dtos.Auth;
 using OpenLedger.Domain.Entities.Auth;
 
 namespace OpenLedger.Application.Interfaces.Singletons

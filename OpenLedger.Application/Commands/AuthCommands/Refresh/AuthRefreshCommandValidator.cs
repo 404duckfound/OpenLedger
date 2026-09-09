@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace OpenLedger.Application.Commands.Auth.Refresh
+namespace OpenLedger.Application.Commands.AuthCommands.Refresh
 {
     public class AuthRefreshCommandValidator : AbstractValidator<AuthRefreshCommand>
     {
