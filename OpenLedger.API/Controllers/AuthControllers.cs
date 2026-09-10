@@ -12,7 +12,6 @@ namespace OpenLedger.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Consumes("application/json")]
     public class AuthController(IMediator mediator) : ControllerBase
     {
         [HttpPost("register")]

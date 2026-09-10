@@ -16,6 +16,7 @@ namespace OpenLedger.Infrastructure.Repositories
         {
             return await context.Users
                 .AsNoTracking()
+                .IgnoreQueryFilters()
                 .AnyAsync(u => u.Email == email, cancellationToken);
         }
 
@@ -23,6 +24,7 @@ namespace OpenLedger.Infrastructure.Repositories
         {
             return await context.Users
                 .AsNoTracking()
+                .IgnoreQueryFilters()
                 .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
         }
 
@@ -30,6 +32,7 @@ namespace OpenLedger.Infrastructure.Repositories
         {
             return await context.Users
                 .AsNoTracking()
+                .IgnoreQueryFilters()
                 .FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
         }
 

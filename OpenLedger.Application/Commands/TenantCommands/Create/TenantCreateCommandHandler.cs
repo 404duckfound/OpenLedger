@@ -10,14 +10,14 @@ using OpenLedger.Domain.Enums;
 
 namespace OpenLedger.Application.Commands.TenantCommands.Create
 {
-    public class TenantCreateCommandHandler(ICurrentUserService currentUserService, IUserRepository userRepository,IUnitOfWork unitOfWork,ITenantRepository tenantRepository,ITokenGenerator tokenGenerator) : IRequestHandler<TenantCreateCommand, AccessTokenDto>
+    public class TenantCreateCommandHandler(ICurrentUserService currentUserService, IUserRepository userRepository, IUnitOfWork unitOfWork, ITenantRepository tenantRepository, ITokenGenerator tokenGenerator) : IRequestHandler<TenantCreateCommand, AccessTokenDto>
     {
         public async Task<AccessTokenDto> Handle(TenantCreateCommand request, CancellationToken cancellationToken)
         {
             var user = await userRepository.GetByIdAsync(currentUserService.UserId, cancellationToken) ?? throw new BadRequestException("User not found.");
             if (user.TenantId != Guid.Empty) throw new BadRequestException("User already has a tenant.");
 
-            var tenant = new Tenant(request.Name,request.Email,request.TaxNumber,request.TaxOffice,request.PhoneNumber,request.Address);
+            var tenant = new Tenant(request.Name, request.Email, request.TaxNumber, request.TaxOffice, request.PhoneNumber, request.Address);
             user.SetTenantId(tenant.Id);
             user.SetRole(UserRole.Admin);
 

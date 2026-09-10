@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using OpenLedger.Application.Behaviors;
+using OpenLedger.Application.Profiles;
 using System.Reflection;
 
 namespace OpenLedger.Application
@@ -21,6 +22,11 @@ namespace OpenLedger.Application
                 cfg.RegisterServicesFromAssembly(assembly);
 
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            });
+
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile(typeof(TenantProfile));
             });
 
             return services;

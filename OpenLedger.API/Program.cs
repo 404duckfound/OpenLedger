@@ -16,6 +16,9 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
 builder.Services.AddOptionsWithValidateOnStart<TokenOptions>().BindConfiguration("Token");
 var tokenOptions = builder.Configuration.GetSection("Token").Get<TokenOptions>();
 
@@ -44,7 +47,6 @@ builder.Services.AddOpenApi(options =>
 });
 builder.Services.AddAuthentication(options =>
 {
-    JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
@@ -62,6 +64,11 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions!.JwtSecret)),
         ClockSkew = TimeSpan.Zero
     };
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
 });
 
 var app = builder.Build();

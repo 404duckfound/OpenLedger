@@ -4,7 +4,8 @@ namespace OpenLedger.Application.Interfaces.Repositories.Customs
 {
     public interface ITenantRepository
     {
-        Task<bool> IsTenantExistsAsync(Guid tenantId, CancellationToken cancellationToken = default);
         Task AddAsync(Tenant tenant, CancellationToken cancellationToken = default);
+        Task<Tenant?> GetByIdAsync(Guid guid,CancellationToken cancellationToken = default);
+        void Update(Tenant tenant);
     }
 }
