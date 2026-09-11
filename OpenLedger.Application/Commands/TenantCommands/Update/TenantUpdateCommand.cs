@@ -1,4 +1,4 @@
-﻿using Wolverine.Shims.MediatR;
+﻿using MediatR;
 
 namespace OpenLedger.Application.Commands.TenantCommands.Update
 {

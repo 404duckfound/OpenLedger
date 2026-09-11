@@ -23,9 +23,10 @@ builder.Services.AddOptionsWithValidateOnStart<TokenOptions>().BindConfiguration
 var tokenOptions = builder.Configuration.GetSection("Token").Get<TokenOptions>();
 
 builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddApplication();
-builder.Services.AddControllers();
-builder.Services.AddHttpContextAccessor();
+builder.Services.AddInfrastructure(builder.Configuration)
+                .AddApplication()
+                .AddHttpContextAccessor()
+                .AddControllers();
 
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
@@ -45,6 +46,7 @@ builder.Services.AddOpenApi(options =>
         return Task.CompletedTask;
     });
 });
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -65,16 +67,13 @@ builder.Services.AddAuthentication(options =>
         ClockSkew = TimeSpan.Zero
     };
 });
-
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
-});
+builder.Services.AddAuthorizationBuilder()
+                .AddPolicy("Admin", policy => policy.RequireRole("Admin"));
 
 var app = builder.Build();
 
-app.UseMiddleware<GlobalExceptionMiddleware>();
-app.UseStatusCodePages(async context =>
+app.UseMiddleware<GlobalExceptionMiddleware>()
+   .UseStatusCodePages(async context =>
 {
     if (context.HttpContext.Response.StatusCode == (int)HttpStatusCode.NotFound)
     {
@@ -87,10 +86,9 @@ app.UseStatusCodePages(async context =>
     }
 });
 
-app.UseHttpsRedirection();
-
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseHttpsRedirection()
+   .UseAuthentication()
+   .UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {

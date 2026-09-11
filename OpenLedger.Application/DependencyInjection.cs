@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
 using Mapster;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using OpenLedger.Application.Behaviors;
 using System.Reflection;
 
 namespace OpenLedger.Application
@@ -14,6 +16,13 @@ namespace OpenLedger.Application
             ValidatorOptions.Global.DefaultRuleLevelCascadeMode = CascadeMode.Stop;
 
             services.AddValidatorsFromAssembly(assembly);
+
+            services.AddMediatR(cfg =>
+            {
+                cfg.RegisterServicesFromAssembly(assembly);
+
+                cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            });
 
             services.AddMapster();
 
