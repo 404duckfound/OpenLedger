@@ -1,8 +1,6 @@
 ﻿using FluentValidation;
-using MediatR;
+using Mapster;
 using Microsoft.Extensions.DependencyInjection;
-using OpenLedger.Application.Behaviors;
-using OpenLedger.Application.Profiles;
 using System.Reflection;
 
 namespace OpenLedger.Application
@@ -17,17 +15,7 @@ namespace OpenLedger.Application
 
             services.AddValidatorsFromAssembly(assembly);
 
-            services.AddMediatR(cfg =>
-            {
-                cfg.RegisterServicesFromAssembly(assembly);
-
-                cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-            });
-
-            services.AddAutoMapper(cfg =>
-            {
-                cfg.AddProfile(typeof(TenantProfile));
-            });
+            services.AddMapster();
 
             return services;
         }
