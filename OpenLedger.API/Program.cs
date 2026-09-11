@@ -22,7 +22,6 @@ Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.DefaultInboundClaimTyp
 builder.Services.AddOptionsWithValidateOnStart<TokenOptions>().BindConfiguration("Token");
 var tokenOptions = builder.Configuration.GetSection("Token").Get<TokenOptions>();
 
-builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration)
                 .AddApplication()
                 .AddHttpContextAccessor()

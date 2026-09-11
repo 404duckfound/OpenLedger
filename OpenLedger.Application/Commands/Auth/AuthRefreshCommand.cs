@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using OpenLedger.Application.Dtos.Auth;
 using OpenLedger.Application.Exceptions;
 using OpenLedger.Application.Interfaces.Repositories.Base;
@@ -8,8 +9,10 @@ using OpenLedger.Application.Interfaces.Singletons;
 using OpenLedger.Domain.Constants;
 using OpenLedger.Domain.Entities.Auth;
 
-namespace OpenLedger.Application.Commands.AuthCommands.Refresh
+namespace OpenLedger.Application.Commands.AuthCommands
 {
+    public record AuthRefreshCommand(string RefreshToken, string AccessToken) : IRequest<AuthResponseDto>;
+
     public class AuthRefreshCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, IUserRepository userRepository, ITokenGenerator tokenGenerator, ICurrentUserService currentUser) : IRequestHandler<AuthRefreshCommand, AuthResponseDto>
     {
         public async Task<AuthResponseDto> Handle(AuthRefreshCommand request, CancellationToken cancellationToken)
@@ -32,6 +35,19 @@ namespace OpenLedger.Application.Commands.AuthCommands.Refresh
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return new AuthResponseDto(jwt, newRefreshToken.Token, newRefreshToken.ExpiresAt);
+        }
+    }
+
+    public class AuthRefreshCommandValidator : AbstractValidator<AuthRefreshCommand>
+    {
+        public AuthRefreshCommandValidator()
+        {
+            RuleFor(r => r.RefreshToken)
+                .NotEmpty().WithMessage("Refresh token is required.")
+                .MaximumLength(100).WithMessage("Refresh token is too long.");
+
+            RuleFor(r => r.AccessToken)
+                .NotEmpty().WithMessage("Access token is required.");
         }
     }
 }

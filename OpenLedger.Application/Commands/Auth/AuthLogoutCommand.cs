@@ -1,11 +1,14 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using OpenLedger.Application.Exceptions;
 using OpenLedger.Application.Interfaces.Repositories.Base;
 using OpenLedger.Application.Interfaces.Repositories.Customs;
 using OpenLedger.Application.Interfaces.Services;
 
-namespace OpenLedger.Application.Commands.AuthCommands.Logout
+namespace OpenLedger.Application.Commands.AuthCommands
 {
+    public record AuthLogoutCommand(string RefreshToken) : IRequest<string>;
+
     public class AuthLogoutCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, ICurrentUserService currentUser) : IRequestHandler<AuthLogoutCommand, string>
     {
         public async Task<string> Handle(AuthLogoutCommand request, CancellationToken cancellationToken)
@@ -19,6 +22,16 @@ namespace OpenLedger.Application.Commands.AuthCommands.Logout
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return "Logged out successfully.";
+        }
+    }
+
+    public class AuthLogoutCommandValidator : AbstractValidator<AuthLogoutCommand>
+    {
+        public AuthLogoutCommandValidator()
+        {
+            RuleFor(r => r.RefreshToken)
+                .NotEmpty().WithMessage("Refresh token is required.")
+                .MaximumLength(100).WithMessage("Refresh token is too long.");
         }
     }
 }
