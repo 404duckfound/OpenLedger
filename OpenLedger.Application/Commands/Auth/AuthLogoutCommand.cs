@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using MediatR;
 using OpenLedger.Application.Exceptions;
 using OpenLedger.Application.Interfaces.Repositories.Base;
 using OpenLedger.Application.Interfaces.Repositories.Customs;
@@ -7,11 +6,11 @@ using OpenLedger.Application.Interfaces.Services;
 
 namespace OpenLedger.Application.Commands.Auth
 {
-    public record AuthLogoutCommand(string RefreshToken) : IRequest<string>;
+    public record AuthLogoutCommand(string RefreshToken);
 
-    public class AuthLogoutCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, ICurrentUserService currentUser) : IRequestHandler<AuthLogoutCommand, string>
+    public class AuthLogoutCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, ICurrentUserService currentUser)
     {
-        public async Task<string> Handle(AuthLogoutCommand request, CancellationToken cancellationToken)
+        public async Task<string> HandleAsync(AuthLogoutCommand request, CancellationToken cancellationToken)
         {
             var refreshToken = await refreshTokenRepository.GetByTokenAsync(request.RefreshToken, cancellationToken);
 

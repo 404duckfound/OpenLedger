@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using OpenLedger.API.Middlewares;
@@ -13,6 +14,9 @@ using Scalar.AspNetCore;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Text;
+using Wolverine;
+using Wolverine.EntityFrameworkCore;
+using Wolverine.FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +26,14 @@ builder.Services.AddInfrastructure(builder.Configuration)
                 .AddControllers();
 
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+builder.Host.UseWolverine(opts =>
+{
+    opts.UseFluentValidation();
+    opts.UseRuntimeCompilation();
+    opts.Discovery.IncludeAssembly(typeof(OpenLedger.Application.DependencyInjection).Assembly);
+    opts.UseEntityFrameworkCoreTransactions();
+});
 
 #region Token
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();

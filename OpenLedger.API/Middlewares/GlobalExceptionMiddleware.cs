@@ -30,10 +30,10 @@ namespace OpenLedger.API.Middlewares
             {
                 case ValidationException validationException:
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    foreach (var error in validationException.Errors)
-                    {
-                        errors.Add(error.ErrorMessage);
-                    }
+                    errors = validationException.Errors
+                        .Select(x => x.ErrorMessage)
+                        .Distinct()
+                        .ToList();
                     break;
                 case BadRequestException badRequestException:
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;

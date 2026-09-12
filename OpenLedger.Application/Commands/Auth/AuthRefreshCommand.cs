@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using MediatR;
 using OpenLedger.Application.Dtos.Auth;
 using OpenLedger.Application.Exceptions;
 using OpenLedger.Application.Interfaces.Repositories.Base;
@@ -10,11 +9,11 @@ using OpenLedger.Domain.Entities.Auth;
 
 namespace OpenLedger.Application.Commands.Auth
 {
-    public record AuthRefreshCommand(string RefreshToken, string AccessToken) : IRequest<AuthResponseDto>;
+    public record AuthRefreshCommand(string RefreshToken, string AccessToken);
 
-    public class AuthRefreshCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, IUserRepository userRepository, ITokenGeneratorService tokenGenerator, ICurrentUserService currentUser) : IRequestHandler<AuthRefreshCommand, AuthResponseDto>
+    public class AuthRefreshCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, IUserRepository userRepository, ITokenGeneratorService tokenGenerator, ICurrentUserService currentUser)
     {
-        public async Task<AuthResponseDto> Handle(AuthRefreshCommand request, CancellationToken cancellationToken)
+        public async Task<AuthResponseDto> HandleAsync(AuthRefreshCommand request, CancellationToken cancellationToken)
         {
             var userIdClaim = tokenGenerator.GetClaimsFromJwt(request.AccessToken).FindFirst(ApplicationClaims.UserId)?.Value;
             if (userIdClaim is null || !Guid.TryParse(userIdClaim, out var userId)) throw new UnauthorizedException("Invalid token claims.");

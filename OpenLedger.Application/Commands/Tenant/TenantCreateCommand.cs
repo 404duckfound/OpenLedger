@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using MediatR;
 using OpenLedger.Application.Dtos.Auth;
 using OpenLedger.Application.Exceptions;
 using OpenLedger.Application.Interfaces.Repositories.Base;
@@ -10,11 +9,11 @@ using System.Text.RegularExpressions;
 
 namespace OpenLedger.Application.Commands.Tenant
 {
-    public record TenantCreateCommand(string Name, string? Email, string? TaxNumber, string? TaxOffice, string? PhoneNumber, string? Address) : IRequest<AccessTokenDto>;
+    public record TenantCreateCommand(string Name, string? Email, string? TaxNumber, string? TaxOffice, string? PhoneNumber, string? Address);
 
-    public class TenantCreateCommandHandler(ICurrentUserService currentUserService, IUserRepository userRepository, IUnitOfWork unitOfWork, ITenantRepository tenantRepository, ITokenGeneratorService tokenGenerator) : IRequestHandler<TenantCreateCommand, AccessTokenDto>
+    public class TenantCreateCommandHandler(ICurrentUserService currentUserService, IUserRepository userRepository, IUnitOfWork unitOfWork, ITenantRepository tenantRepository, ITokenGeneratorService tokenGenerator)
     {
-        public async Task<AccessTokenDto> Handle(TenantCreateCommand request, CancellationToken cancellationToken)
+        public async Task<AccessTokenDto> HandleAsync(TenantCreateCommand request, CancellationToken cancellationToken)
         {
             var user = await userRepository.GetByIdAsync(currentUserService.UserId, cancellationToken) ?? throw new BadRequestException("User not found.");
             if (user.TenantId != Guid.Empty) throw new BadRequestException("User already has a tenant.");

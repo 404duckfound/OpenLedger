@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using MediatR;
 using OpenLedger.Application.Dtos.Auth;
 using OpenLedger.Application.Exceptions;
 using OpenLedger.Application.Interfaces.Repositories.Base;
@@ -10,11 +9,11 @@ using System.Text.RegularExpressions;
 
 namespace OpenLedger.Application.Commands.Auth
 {
-    public record AuthLoginCommand(string Email, string Password) : IRequest<AuthResponseDto>;
+    public record AuthLoginCommand(string Email, string Password);
 
-    public class AuthLoginCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, IUserRepository userRepository, IPasswordHasherService passwordHasher, ITokenGeneratorService tokenGenerator, ICurrentUserService currentUser) : IRequestHandler<AuthLoginCommand, AuthResponseDto>
+    public class AuthLoginCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, IUserRepository userRepository, IPasswordHasherService passwordHasher, ITokenGeneratorService tokenGenerator, ICurrentUserService currentUser)
     {
-        public async Task<AuthResponseDto> Handle(AuthLoginCommand request, CancellationToken cancellationToken)
+        public async Task<AuthResponseDto> HandleAsync(AuthLoginCommand request, CancellationToken cancellationToken)
         {
             User user = await userRepository.GetByEmailAsync(request.Email, cancellationToken) ?? throw new UnauthorizedException("Invalid email or password");
             if (!passwordHasher.VerifyPassword(request.Password, user.PasswordHash)) throw new UnauthorizedException("Invalid email or password");

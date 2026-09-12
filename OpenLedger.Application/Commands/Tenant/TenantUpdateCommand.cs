@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using MediatR;
 using OpenLedger.Application.Exceptions;
 using OpenLedger.Application.Interfaces.Repositories.Base;
 using OpenLedger.Application.Interfaces.Repositories.Customs;
@@ -9,11 +8,11 @@ using System.Text.RegularExpressions;
 
 namespace OpenLedger.Application.Commands.Tenant
 {
-    public record TenantUpdateCommand(string Name, string? Email, string? TaxNumber, string? TaxOffice, string? PhoneNumber, string? Address) : IRequest<string>;
+    public record TenantUpdateCommand(string Name, string? Email, string? TaxNumber, string? TaxOffice, string? PhoneNumber, string? Address);
 
-    public class TenantUpdateCommandHandler(ITenantRepository tenantRepository, IUnitOfWork unitOfWork, ICurrentUserService currentUserService) : IRequestHandler<TenantUpdateCommand, string>
+    public class TenantUpdateCommandHandler(ITenantRepository tenantRepository, IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
     {
-        public async Task<string> Handle(TenantUpdateCommand request, CancellationToken cancellationToken)
+        public async Task<string> HandleAsync(TenantUpdateCommand request, CancellationToken cancellationToken)
         {
             var tenant = await tenantRepository.GetByIdAsync(currentUserService.TenantId, cancellationToken) ?? throw new NotFoundException("Tenant not found.");
 

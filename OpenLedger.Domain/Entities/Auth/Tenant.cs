@@ -14,5 +14,15 @@ namespace OpenLedger.Domain.Entities.Auth
 
         // Domain Functions
         public bool IsSubscriptionEnd { get => SubscriptionExpiration <= DateTime.MinValue ? true : SubscriptionExpiration <= DateTime.UtcNow; }
+
+        public void Update(string name, string? email = null, string? taxNumber = null, string? taxOffice = null, string? phoneNumber = null, string? address = null)
+        {
+            Name = name;
+            Email = email;
+            TaxNumber = taxNumber;
+            TaxOffice = taxOffice;
+            PhoneNumber = phoneNumber;
+            Address = address;
+        }
     }
 }

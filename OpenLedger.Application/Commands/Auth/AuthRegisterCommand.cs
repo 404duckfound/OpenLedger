@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using MediatR;
 using OpenLedger.Application.Dtos.Auth;
 using OpenLedger.Application.Interfaces.Repositories.Base;
 using OpenLedger.Application.Interfaces.Repositories.Customs;
@@ -9,11 +8,11 @@ using System.Text.RegularExpressions;
 
 namespace OpenLedger.Application.Commands.Auth
 {
-    public record AuthRegisterCommand(string Email, string Name, string Password, string ConfirmPassword) : IRequest<AuthResponseDto>;
+    public record AuthRegisterCommand(string Email, string Name, string Password, string ConfirmPassword);
 
-    public class AuthRegisterCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, IUserRepository userRepository, IPasswordHasherService passwordHasher, ITokenGeneratorService tokenGenerator, ICurrentUserService currentUser) : IRequestHandler<AuthRegisterCommand, AuthResponseDto>
+    public class AuthRegisterCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, IUserRepository userRepository, IPasswordHasherService passwordHasher, ITokenGeneratorService tokenGenerator, ICurrentUserService currentUser)
     {
-        public async Task<AuthResponseDto> Handle(AuthRegisterCommand request, CancellationToken cancellationToken)
+        public async Task<AuthResponseDto> HandleAsync(AuthRegisterCommand request, CancellationToken cancellationToken)
         {
             var passwordHash = passwordHasher.HashPassword(request.Password);
             var user = new User(request.Name, request.Email, passwordHash);
