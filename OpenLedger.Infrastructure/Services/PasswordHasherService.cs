@@ -1,8 +1,8 @@
-using OpenLedger.Application.Interfaces.Singletons;
+using OpenLedger.Application.Interfaces.Services;
 
-namespace OpenLedger.Infrastructure.Singletons
+namespace OpenLedger.Infrastructure.Services
 {
-    public class PasswordHasher : IPasswordHasher
+    public class PasswordHasherService : IPasswordHasherService
     {
         public string HashPassword(string password)
         {

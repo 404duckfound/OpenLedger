@@ -5,7 +5,7 @@ using OpenLedger.Application.Interfaces.Repositories.Base;
 using OpenLedger.Application.Interfaces.Repositories.Customs;
 using OpenLedger.Application.Interfaces.Services;
 
-namespace OpenLedger.Application.Commands.AuthCommands
+namespace OpenLedger.Application.Commands.Auth
 {
     public record AuthLogoutCommand(string RefreshToken) : IRequest<string>;
 

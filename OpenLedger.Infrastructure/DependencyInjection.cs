@@ -3,11 +3,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OpenLedger.Application.Interfaces.Repositories.Base;
 using OpenLedger.Application.Interfaces.Repositories.Customs;
-using OpenLedger.Application.Interfaces.Singletons;
+using OpenLedger.Application.Interfaces.Services;
 using OpenLedger.Infrastructure.Contexts;
 using OpenLedger.Infrastructure.Repositories;
 using OpenLedger.Infrastructure.Repositories.Base;
-using OpenLedger.Infrastructure.Singletons;
+using OpenLedger.Infrastructure.Services;
 
 namespace OpenLedger.Infrastructure
 {
@@ -21,8 +21,9 @@ namespace OpenLedger.Infrastructure
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddSingleton<ITokenGenerator, TokenGenerator>();
-            services.AddSingleton<IPasswordHasher, PasswordHasher>();
+            services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
+
+            services.AddSingleton<IPasswordHasherService, PasswordHasherService>();
 
             services.AddDbContext<AppDbContext>((options) =>
             {

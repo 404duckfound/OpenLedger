@@ -1,13 +1,13 @@
 ﻿using FluentValidation;
-using Mapster;
 using MediatR;
-using OpenLedger.API.Middlewares;
+using OpenLedger.Application.Exceptions;
 using OpenLedger.Application.Interfaces.Repositories.Base;
 using OpenLedger.Application.Interfaces.Repositories.Customs;
 using OpenLedger.Application.Interfaces.Services;
+using OpenLedger.Application.Mappers;
 using System.Text.RegularExpressions;
 
-namespace OpenLedger.Application.Commands.TenantCommands
+namespace OpenLedger.Application.Commands.Tenant
 {
     public record TenantUpdateCommand(string Name, string? Email, string? TaxNumber, string? TaxOffice, string? PhoneNumber, string? Address) : IRequest<string>;
 
@@ -17,7 +17,7 @@ namespace OpenLedger.Application.Commands.TenantCommands
         {
             var tenant = await tenantRepository.GetByIdAsync(currentUserService.TenantId, cancellationToken) ?? throw new NotFoundException("Tenant not found.");
 
-            request.Adapt(tenant);
+            request.UpdateRequestTo(tenant);
 
             tenantRepository.Update(tenant);
             await unitOfWork.SaveChangesAsync(cancellationToken);

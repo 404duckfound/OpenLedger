@@ -2,9 +2,9 @@
 using OpenLedger.Application.Dtos.Auth;
 using OpenLedger.Domain.Entities.Auth;
 
-namespace OpenLedger.Application.Interfaces.Singletons
+namespace OpenLedger.Application.Interfaces.Services
 {
-    public interface ITokenGenerator
+    public interface ITokenGeneratorService
     {
         string GenerateJwtToken(User user);
         RefreshTokenDto GenerateRefreshToken();

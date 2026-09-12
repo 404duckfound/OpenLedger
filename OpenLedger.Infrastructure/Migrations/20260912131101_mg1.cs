@@ -38,12 +38,12 @@ namespace OpenLedger.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    SubscriptionExpiration = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP + INTERVAL '30 days'"),
                     Email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     TaxNumber = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     TaxOffice = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     PhoneNumber = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     Address = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    SubscriptionExpiration = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP + INTERVAL '30 days'"),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>

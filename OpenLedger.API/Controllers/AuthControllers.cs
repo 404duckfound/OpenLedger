@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OpenLedger.Application.Commands.AuthCommands;
+using OpenLedger.Application.Commands.Auth;
 using OpenLedger.Application.Dtos.Auth;
 
 namespace OpenLedger.API.Controllers

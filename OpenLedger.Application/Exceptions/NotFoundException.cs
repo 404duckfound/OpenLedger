@@ -1,4 +1,4 @@
-﻿namespace OpenLedger.API.Middlewares
+﻿namespace OpenLedger.Application.Exceptions
 {
     public class NotFoundException : Exception
     {

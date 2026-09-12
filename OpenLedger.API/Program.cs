@@ -16,12 +16,6 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
-
-builder.Services.AddOptionsWithValidateOnStart<TokenOptions>().BindConfiguration("Token");
-var tokenOptions = builder.Configuration.GetSection("Token").Get<TokenOptions>();
-
 builder.Services.AddInfrastructure(builder.Configuration)
                 .AddApplication()
                 .AddHttpContextAccessor()
@@ -29,22 +23,12 @@ builder.Services.AddInfrastructure(builder.Configuration)
 
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
-builder.Services.AddOpenApi(options =>
-{
-    options.AddDocumentTransformer((document, _, _) =>
-    {
-        (document.Components ??= new()).SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
+#region Token
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-        document.Components.SecuritySchemes!["Bearer"] = new OpenApiSecurityScheme
-        {
-            Type = SecuritySchemeType.Http,
-            Scheme = "bearer",
-            BearerFormat = "JWT"
-        };
-
-        return Task.CompletedTask;
-    });
-});
+builder.Services.AddOptionsWithValidateOnStart<TokenOptions>().BindConfiguration("Token");
+var tokenOptions = builder.Configuration.GetSection("Token").Get<TokenOptions>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -69,8 +53,31 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorizationBuilder()
                 .AddPolicy("Admin", policy => policy.RequireRole("Admin"));
 
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer((document, _, _) =>
+    {
+        (document.Components ??= new()).SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
+
+        document.Components.SecuritySchemes!["Bearer"] = new OpenApiSecurityScheme
+        {
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer",
+            BearerFormat = "JWT"
+        };
+
+        return Task.CompletedTask;
+    });
+});
+#endregion
+
 var app = builder.Build();
 
+app.UseHttpsRedirection()
+   .UseAuthentication()
+   .UseAuthorization();
+
+#region Exception
 app.UseMiddleware<GlobalExceptionMiddleware>()
    .UseStatusCodePages(async context =>
 {
@@ -84,10 +91,7 @@ app.UseMiddleware<GlobalExceptionMiddleware>()
 
     }
 });
-
-app.UseHttpsRedirection()
-   .UseAuthentication()
-   .UseAuthorization();
+#endregion
 
 if (app.Environment.IsDevelopment())
 {

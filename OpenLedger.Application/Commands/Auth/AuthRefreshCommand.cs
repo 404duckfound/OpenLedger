@@ -5,15 +5,14 @@ using OpenLedger.Application.Exceptions;
 using OpenLedger.Application.Interfaces.Repositories.Base;
 using OpenLedger.Application.Interfaces.Repositories.Customs;
 using OpenLedger.Application.Interfaces.Services;
-using OpenLedger.Application.Interfaces.Singletons;
 using OpenLedger.Domain.Constants;
 using OpenLedger.Domain.Entities.Auth;
 
-namespace OpenLedger.Application.Commands.AuthCommands
+namespace OpenLedger.Application.Commands.Auth
 {
     public record AuthRefreshCommand(string RefreshToken, string AccessToken) : IRequest<AuthResponseDto>;
 
-    public class AuthRefreshCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, IUserRepository userRepository, ITokenGenerator tokenGenerator, ICurrentUserService currentUser) : IRequestHandler<AuthRefreshCommand, AuthResponseDto>
+    public class AuthRefreshCommandHandler(IRefreshTokenRepository refreshTokenRepository, IUnitOfWork unitOfWork, IUserRepository userRepository, ITokenGeneratorService tokenGenerator, ICurrentUserService currentUser) : IRequestHandler<AuthRefreshCommand, AuthResponseDto>
     {
         public async Task<AuthResponseDto> Handle(AuthRefreshCommand request, CancellationToken cancellationToken)
         {

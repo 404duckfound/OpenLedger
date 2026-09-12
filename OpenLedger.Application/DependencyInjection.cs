@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using Mapster;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using OpenLedger.Application.Behaviors;
@@ -23,8 +22,6 @@ namespace OpenLedger.Application
 
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             });
-
-            services.AddMapster();
 
             return services;
         }

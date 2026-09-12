@@ -1,6 +1,6 @@
-namespace OpenLedger.Application.Interfaces.Singletons
+namespace OpenLedger.Application.Interfaces.Services
 {
-    public interface IPasswordHasher
+    public interface IPasswordHasherService
     {
         string HashPassword(string password);
         bool VerifyPassword(string password,string passwordHash);

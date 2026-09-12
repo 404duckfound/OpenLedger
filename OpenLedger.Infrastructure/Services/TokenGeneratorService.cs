@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using OpenLedger.Application.Dtos.Auth;
-using OpenLedger.Application.Interfaces.Singletons;
+using OpenLedger.Application.Interfaces.Services;
 using OpenLedger.Application.Options;
 using OpenLedger.Domain.Constants;
 using OpenLedger.Domain.Entities.Auth;
@@ -10,9 +10,9 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace OpenLedger.Infrastructure.Singletons
+namespace OpenLedger.Infrastructure.Services
 {
-    public class TokenGenerator(IOptions<TokenOptions> tokenOptions) : ITokenGenerator
+    public class TokenGeneratorService(IOptions<TokenOptions> tokenOptions) : ITokenGeneratorService
     {
         public string GenerateJwtToken(User user)
         {
