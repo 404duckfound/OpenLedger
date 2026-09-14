@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using OpenLedger.API.Middlewares;
@@ -20,12 +19,18 @@ using Wolverine.FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
+#region Options
+builder.Services.AddOptionsWithValidateOnStart<TokenOptions>().BindConfiguration(TokenOptions.SectionName).ValidateDataAnnotations();
+builder.Services.AddOptionsWithValidateOnStart<EmailOptions>().BindConfiguration(EmailOptions.SectionName).ValidateDataAnnotations();
+builder.Services.AddOptionsWithValidateOnStart<DbOptions>().BindConfiguration(DbOptions.SectionName).ValidateDataAnnotations();
+
+var tokenOptions = builder.Configuration.GetSection(TokenOptions.SectionName).Get<TokenOptions>();
+#endregion
+
 builder.Services.AddInfrastructure(builder.Configuration)
                 .AddApplication()
                 .AddHttpContextAccessor()
                 .AddControllers();
-
-builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 builder.Host.UseWolverine(opts =>
 {
@@ -35,12 +40,11 @@ builder.Host.UseWolverine(opts =>
     opts.UseEntityFrameworkCoreTransactions();
 });
 
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+
 #region Token
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
-
-builder.Services.AddOptionsWithValidateOnStart<TokenOptions>().BindConfiguration("Token");
-var tokenOptions = builder.Configuration.GetSection("Token").Get<TokenOptions>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -58,7 +62,7 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = tokenOptions!.JwtIssuer,
         ValidAudience = tokenOptions!.JwtAudience,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions!.JwtSecret)),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions.JwtSecret!)),
         ClockSkew = TimeSpan.Zero
     };
 });
@@ -105,6 +109,7 @@ app.UseMiddleware<GlobalExceptionMiddleware>()
 });
 #endregion
 
+#region Development
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -113,6 +118,7 @@ if (app.Environment.IsDevelopment())
         options.AddPreferredSecuritySchemes("Bearer");
     });
 }
+#endregion
 
 app.MapControllers();
 

@@ -10,10 +10,6 @@
 	  <PackageReference Include="FluentValidation" Version="12.1.1" />
 	  <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
 	  <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.12" />
-	  <PackageReference Include="WolverineFx" Version="6.36.0" />
-	  <PackageReference Include="WolverineFx.EntityFrameworkCore" Version="6.36.0" />
-	  <PackageReference Include="WolverineFx.FluentValidation" Version="6.36.0" />
-	  <PackageReference Include="WolverineFx.RuntimeCompilation" Version="6.36.0" />
   </ItemGroup>
 
   <ItemGroup>

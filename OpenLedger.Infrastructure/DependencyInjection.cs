@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OpenLedger.Application.Interfaces.Repositories.Base;
 using OpenLedger.Application.Interfaces.Repositories.Customs;
 using OpenLedger.Application.Interfaces.Services;
+using OpenLedger.Application.Options;
 using OpenLedger.Infrastructure.Contexts;
 using OpenLedger.Infrastructure.Repositories;
 using OpenLedger.Infrastructure.Repositories.Base;
@@ -15,6 +16,8 @@ namespace OpenLedger.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+            var dbOptions = configuration.GetSection(DbOptions.SectionName).Get<DbOptions>();
+
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<ITenantRepository, TenantRepository>();
@@ -27,8 +30,7 @@ namespace OpenLedger.Infrastructure
 
             services.AddDbContext<AppDbContext>((options) =>
             {
-                var connectionString = configuration.GetConnectionString("Base") ?? string.Empty;
-                options.UseNpgsql(connectionString, b => b.MigrationsAssembly("OpenLedger.Infrastructure"));
+                options.UseNpgsql(dbOptions!.DbConnectionString, b => b.MigrationsAssembly("OpenLedger.Infrastructure"));
             });
 
             return services;

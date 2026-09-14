@@ -4,16 +4,17 @@ namespace OpenLedger.Application.Options
 {
     public class TokenOptions
     {
-        [Required(ErrorMessage = "Token:JwtSecret is required.")]
-        public required string JwtSecret { get; set; }
-        [Required(ErrorMessage = "Token:JwtIssuer is required.")]
-        public required string JwtIssuer { get; set; }
-        [Required(ErrorMessage = "Token:JwtAudience is required.")]
-        public required string JwtAudience { get; set; }
-        [Required(ErrorMessage = "Token:JwtExpires is required.")]
-        public required int JwtExpires { get; set; }
+        public const string SectionName = "TokenOptions";
 
-        [Required(ErrorMessage = "Token:RefreshExpiresDays is required.")]
-        public required int RefreshExpiresDays { get; set; }
+        [Required(ErrorMessage = "JwtSecret is required.")]
+        public string? JwtSecret { get; set; }
+        [Required(ErrorMessage = "JwtIssuer is required.")]
+        public string? JwtIssuer { get; set; }
+        [Required(ErrorMessage = "JwtAudience is required.")]
+        public string? JwtAudience { get; set; }
+        [Required(ErrorMessage = "JwtExpires is required.")]
+        public int JwtExpires { get; set; }
+        [Required(ErrorMessage = "RefreshExpiresDays is required.")]
+        public int RefreshExpiresDays { get; set; }
     }
 }

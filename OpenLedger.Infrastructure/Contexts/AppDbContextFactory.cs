@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using OpenLedger.Application.Options;
 
 namespace OpenLedger.Infrastructure.Contexts
 {
@@ -19,15 +20,15 @@ namespace OpenLedger.Infrastructure.Contexts
                 .AddEnvironmentVariables()
                 .Build();
 
-            var connectionString = configuration.GetConnectionString("Base");
+            var dbOptions = configuration.GetSection(DbOptions.SectionName).Get<DbOptions>();
 
-            if (string.IsNullOrEmpty(connectionString))
+            if (string.IsNullOrEmpty(dbOptions!.DbConnectionString))
             {
                 throw new InvalidOperationException($"Connection string 'Base' could not be loaded for environment '{environment}'.");
             }
 
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            optionsBuilder.UseNpgsql(connectionString, b => b.MigrationsAssembly("OpenLedger.Infrastructure"));
+            optionsBuilder.UseNpgsql(dbOptions.DbConnectionString, b => b.MigrationsAssembly("OpenLedger.Infrastructure"));
 
             return new AppDbContext(null!, optionsBuilder.Options);
         }
