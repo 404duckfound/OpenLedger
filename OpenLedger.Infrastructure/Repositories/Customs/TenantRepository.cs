@@ -3,7 +3,7 @@ using OpenLedger.Application.Interfaces.Repositories.Customs;
 using OpenLedger.Domain.Entities.Auth;
 using OpenLedger.Infrastructure.Contexts;
 
-namespace OpenLedger.Infrastructure.Repositories
+namespace OpenLedger.Infrastructure.Repositories.Customs
 {
     public class TenantRepository(AppDbContext context) : ITenantRepository
     {

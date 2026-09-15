@@ -20,7 +20,7 @@ namespace OpenLedger.Application.Commands.Tenant
 
             var tenant = new Domain.Entities.Auth.Tenant(request.Name, request.Email, request.TaxNumber, request.TaxOffice, request.PhoneNumber, request.Address);
             user.SetTenantId(tenant.Id);
-            user.SetRole(UserRole.Admin);
+            user.SetRole(UserRole.Creator);
 
             var accessToken = tokenGenerator.GenerateJwtToken(user);
 

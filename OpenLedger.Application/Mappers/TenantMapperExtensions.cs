@@ -14,7 +14,7 @@ namespace OpenLedger.Application.Mappers
                taxOffice: command.TaxOffice,
                phoneNumber: command.PhoneNumber,
                address: command.Address
-               );
+            );
         }
     }
 }

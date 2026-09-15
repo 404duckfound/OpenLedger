@@ -6,8 +6,8 @@ using OpenLedger.Application.Interfaces.Repositories.Customs;
 using OpenLedger.Application.Interfaces.Services;
 using OpenLedger.Application.Options;
 using OpenLedger.Infrastructure.Contexts;
-using OpenLedger.Infrastructure.Repositories;
 using OpenLedger.Infrastructure.Repositories.Base;
+using OpenLedger.Infrastructure.Repositories.Customs;
 using OpenLedger.Infrastructure.Services;
 
 namespace OpenLedger.Infrastructure
@@ -24,9 +24,9 @@ namespace OpenLedger.Infrastructure
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
-
-            services.AddSingleton<IPasswordHasherService, PasswordHasherService>();
+            services.AddTransient<ITokenGeneratorService, TokenGeneratorService>();
+            services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IPasswordHasherService, PasswordHasherService>();
 
             services.AddDbContext<AppDbContext>((options) =>
             {

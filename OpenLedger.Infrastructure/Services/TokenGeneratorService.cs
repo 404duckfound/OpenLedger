@@ -27,7 +27,7 @@ namespace OpenLedger.Infrastructure.Services
 
             if (user.TenantId != Guid.Empty) claims.Add(new(ApplicationClaims.TenantId, user.TenantId.ToString()));
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions.Value.JwtSecret));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions.Value.JwtSecret!));
 
             var tokenDescriptor = new JwtSecurityToken(
                 issuer: tokenOptions.Value.JwtIssuer,
@@ -52,7 +52,7 @@ namespace OpenLedger.Infrastructure.Services
                 ValidateAudience = false,
                 ValidateIssuer = false,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions.Value.JwtSecret)),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenOptions.Value.JwtSecret!)),
                 ValidateLifetime = false
             };
 
